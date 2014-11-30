@@ -1,0 +1,16 @@
+[user]
+	email = rafa.boanova@gmail.com
+	name = Raphael Nova
+[core]
+	editor = vim
+	excludesfile = /home/raphael/.gitignore_global
+[color]
+	ui = auto
+	#diff = auto
+	#status = auto
+[alias]
+	slog = log --oneline --graph
+	recent = log --oneline --graph -5
+	hist = rev-list --oneline --graph HEAD
+[clean]
+	requireForce = false
