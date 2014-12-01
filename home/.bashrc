@@ -2,9 +2,17 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
-# Scripts pessoais
-PATH_SCRIPTS="$HOME/code/shellscripts/functions"
-[[ -s $PATH_SCRIPTS ]] && source $PATH_SCRIPTS
+function __git_branch() {
+    git branch 2>/dev/null |\
+    grep \*                |\
+    sed -Ee's#\* (.*)#[\1]#'
+}
+
+function __svn_branch() {
+    svn info 2>/dev/null |\
+    egrep ^URL           |\
+    sed -Ee's#^.*/((trunk|branches|tags).*)#[\1]#'
+}
 
 # If not running interactively, don't do anything
 #[ -z "$PS1" ] && return
