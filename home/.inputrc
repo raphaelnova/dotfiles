@@ -1,0 +1,32 @@
+#
+# Sources:
+# http://www.reddit.com/r/commandline/comments/kbeoe/you_can_make_readline_and_bash_much_more_user/
+# https://wiki.archlinux.org/index.php/Readline
+#
+
+# Disable ^C echo after pressing Ctrl+C
+set echo-control-characters off
+
+# ignore case, treat - and _ as equivalent on autocomplete
+set completion-ignore-case on
+set completion-map-case on
+
+# Displays only the differences when autocomplete is ambiguous
+set completion-prefix-display-length 2
+
+#set editing-mode vi
+
+"\C-j": menu-complete
+"\C-k": menu-complete-backward
+"\C-p": history-search-backward
+"\C-n": history-search-forward
+"\C-u": kill-whole-line
+
+# copied from /etc/inputrc
+"\e[1;5C": forward-word
+"\e[1;5D": backward-word
+"\e[5C": forward-word
+"\e[5D": backward-word
+"\e\e[C": forward-word
+"\e\e[D": backward-word
+

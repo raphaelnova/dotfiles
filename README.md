@@ -5,7 +5,6 @@ so do not use it if you care about your current dotfiles. There's a lot
 of things I need to fix before trying to make them portable, namely:
 
 * trim bash config (probably depends on Ubuntu configs)
-* find my inputrc and xmodmap -- they're here, somewhere, hm...
 * fix vim plugins (powerline doesn't work)
 * merge my RHEL config into it
 
