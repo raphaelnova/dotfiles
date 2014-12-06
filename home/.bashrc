@@ -75,8 +75,11 @@ alias hex="od -tx1 -w16 -Ax"
 #PATH=$PATH:$HOME/.rvm/bin
 #[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
-# cabal (do not use /usr/bin/cabal)
-PATH=~/.cabal/bin:$PATH
+# Haskell binaries (ghc, cabal, happy, alex)
+PATH=".cabal-sandbox/bin:~/.cabal/bin:/opt/cabal/1.20/bin:$PATH"
+PATH="/opt/ghc/7.8.3/bin:/opt/happy/1.19.4/bin:/opt/alex/3.1.3/bin:$PATH"
+
+export PATH
 
 export LS_COLORS="\
 rs=0:di=00;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:\

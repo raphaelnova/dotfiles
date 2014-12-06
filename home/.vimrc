@@ -8,7 +8,7 @@ set nocompatible
 set encoding=utf-8
 autocmd! bufwritepost .vimrc source %
 
-set title
+"set title       " Thanks for flying Vim
 set nobackup
 set noswapfile
 set tabstop=2    " how many columns a tab counts for
