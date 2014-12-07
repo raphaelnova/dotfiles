@@ -8,23 +8,22 @@ set nocompatible
 set encoding=utf-8
 autocmd! bufwritepost .vimrc source %
 
-"set title       " Thanks for flying Vim
 set nobackup
 set noswapfile
-set tabstop=2    " how many columns a tab counts for
+set tabstop=4    " how many columns a tab counts for
 set expandtab    " insert spaces when hit tab
-set shiftwidth=2 " how many columns the reindent indents
+set shiftwidth=4 " how many columns the reindent indents
 set autoindent
 set number
 set nowrap
 set list
 set listchars=tab:>.,trail:.,extends:~,nbsp:.
 
-"set incsearch    " searches as characters are typed
-"set hlsearch     " highlight all search results
+set incsearch    " searches as characters are typed
+set hlsearch     " highlight all search results
 "noremap <esc> :nohlsearch<return><esc> " :noh clears highlights
 "  OR
-"nnoremap <leader><space> :noh<CR>
+nnoremap <leader><space> :noh<CR>
 
 set wildmenu     " list cmd autocomplete options (cycle with tab)
 set showmatch    " highlight matches {[()]}
@@ -78,8 +77,10 @@ set pastetoggle=<F2>
 "   vim-colors-solarized
 "   powerline
 " shit won't work and I don't know why
-set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
-call pathogen#infect()
+"set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
+execute pathogen#infect()
+syntax on
+filetype plugin indent on
 " ctrlp
 " silver surfer
 " gist.vim
