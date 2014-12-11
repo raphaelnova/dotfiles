@@ -5,6 +5,9 @@ HISTFILESIZE=2000
 shopt -s histappend
 shopt -s checkwinsize
 
+force_color_prompt=yes
+export TERM=xterm-256color
+
 function __git_branch() {
     git branch 2>/dev/null |\
     grep \*                |\
@@ -81,6 +84,7 @@ PATH="/opt/ghc/7.8.3/bin:/opt/happy/1.19.4/bin:/opt/alex/3.1.3/bin:$PATH"
 
 export PATH
 
+# man dircolors
 export LS_COLORS="\
 rs=0:di=00;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:\
 bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:\
