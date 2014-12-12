@@ -1,8 +1,6 @@
 "
 " see also /etc/vim/vimrc
 "
-" after editing, reload with :so %
-"
 
 " ==== Vundle setup and plugins ==========================================
 
@@ -34,10 +32,9 @@ filetype plugin indent on
 
 if &t_Co >= 256 || has("gui_running")
   syntax enable
-  " — not happy...
-  "set background=dark
-  "colorscheme solarized
-  "set cursorline
+  set background=dark
+  colorscheme solarized
+  set cursorline
 endif
 
 set encoding=utf-8
@@ -66,7 +63,7 @@ nnoremap <F2> :set invpaste paste?<CR>
 set pastetoggle=<F2>
 set showmode
 
-let mapleader=","
+let mapleader=";"
 
 "
 " Key maps:
@@ -103,6 +100,5 @@ nnoremap <leader><space> :noh<CR>
 " center line while navigating up and down
 nnoremap j          jzz
 nnoremap k          kzz
-" quick esc
 inoremap kj         <ESC>
 
