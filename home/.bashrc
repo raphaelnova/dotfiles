@@ -20,6 +20,7 @@ fi
 
 if [ -f ~/.bash_functions ]; then
     . ~/.bash_functions
+    PROMPT_COMMAND='GIT_BRANCH="$(__git_branch)";SVN_BRANCH="$(__svn_branch)"'
 fi
 
 # enable programmable completion features (you don't need to enable
@@ -34,7 +35,7 @@ export PROMPT_DIRTRIM=3
 
 if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
   PS1='\n\[\e[32m\]\u\[\e[00m\]: \[\e[34m\]\w \
-\[\e[35m\]$(__git_branch)\[\e[36m\]$(__svn_branch)\[\e[0m\]\n\$ '
+\[\e[35m\]${GIT_BRANCH}\[\e[36m\]${SVN_BRANCH}\[\e[0m\]\n\$ '
 else
   PS1='\n\u@\h: \w\n\$ '
 fi
