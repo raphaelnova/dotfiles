@@ -4,31 +4,25 @@
 
 " ==== Vundle setup and plugins ==========================================
 
+" see :h vundle for more details or wiki for FAQ
+
 set nocompatible
 filetype off
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-"
-" Brief help
-" :PluginList - list configured bundles
-" :PluginInstall(!) - install(update) bundles
-" :PluginSearch(!) foo - search(or refresh cache first) for foo
-" :PluginClean(!) - confirm(or auto-approve) removal of unused bundles
-"
-" see :h vundle for more details or wiki for FAQ
-"
-
 Plugin 'gmarik/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
-Plugin 'Lokaltog/powerline'
+Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plugin 'altercation/vim-colors-solarized'
 
 call vundle#end()
 filetype plugin indent on
 
 " ==== End Vundle setup ==================================================
+
+set encoding=utf-8
 
 if &t_Co >= 256 || has("gui_running")
   syntax enable
@@ -37,8 +31,12 @@ if &t_Co >= 256 || has("gui_running")
   set cursorline
 endif
 
-set encoding=utf-8
-autocmd! bufwritepost .vimrc source %
+set laststatus=2
+let g:Powerline_symbols='fancy'
+
+" This breaks powerline when saving this file
+" and it's not necessary anyways. Just use :so %
+"autocmd! bufwritepost .vimrc source %
 
 set nobackup
 set noswapfile
