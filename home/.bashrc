@@ -24,7 +24,7 @@ function __svn_branch() {
 export PROMPT_DIRTRIM=2
 
 if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-  PS1='\n\[\033[32m\]@ \h\[\033[00m\]: \[\033[34m\]\w \[\033[35m\]$(__git_branch)\[\033[36m\]$(__svn_branch)\[\033[0m\]\n\$ '
+  PS1='\n\[\e[32m\]\u\[\e[00m\]: \[\e[34m\]\w \[\e[35m\]$(__git_branch)\[\e[36m\]$(__svn_branch)\[\e[0m\]\n\$ '
 else
   PS1='\n\u@\h: \w\n\$ '
 fi
@@ -85,4 +85,3 @@ PATH="/opt/ghc/7.8.3/bin:/opt/happy/1.19.4/bin:/opt/alex/3.1.3/bin:$PATH"
 export PATH
 
 eval $(dircolors ~/.dircolors)
-
