@@ -5,7 +5,6 @@ so do not use it if you care about your current dotfiles. There's a lot
 of things I need to fix before trying to make them portable, namely:
 
 * trim bash config (probably depends on Ubuntu configs)
-* fix vim plugins (powerline doesn't work)
 * merge my RHEL config into it
 
 ### The setup
@@ -13,8 +12,6 @@ of things I need to fix before trying to make them portable, namely:
 Whatever goes in ~ is saved inside home/. This is to keep my dotfiles and
 repo dotfiles (such as .gitmodules) separated -- it makes the setup easier.
 Also, I think I'll need to save files from /etc too. I'm not sure yet.
-
-Vim plugins are submodules, when applicable (all of them so far).
 
 ### License
 
