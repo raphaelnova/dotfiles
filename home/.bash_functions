@@ -2,14 +2,14 @@
 __git_branch ()
 {
     git branch 2>/dev/null |\
-    grep \*                |\
+    grep "\*"              |\
     sed -Ee's#\* (.*)#[\1]#'
 }
 
 __svn_branch ()
 {
     svn info 2>/dev/null |\
-    egrep ^URL           |\
+    grep -E "^URL"       |\
     sed -Ee's#^.*/((trunk|branches|tags).*)#[\1]#'
 }
 
@@ -43,10 +43,10 @@ colors ()
 # $ go [ls options] dir
 go ()
 {
-    cd ${!#}            # last arg
+    cd "${!#}"            # last arg
     if [[ $? != 0 ]]; then return; fi
 
-    ls ${@:1:$(($#-1))} # all but last
+    ls "${@:1:$(($#-1))}" # all but last
 
     #... Bash is gross, isn't it? Eek!
 }
@@ -55,16 +55,16 @@ go ()
 # $ mkcd [mkdir options] dir
 mkcd ()
 {
-    mkdir $@
+    mkdir "$@"
     if [[ $? != 0 ]]; then return; fi
 
-    cd ${!#}
+    cd "${!#}"
 }
 
 # Merges all pdf files in the current dir and outputs out.pdf
 pdf_merge ()
 {
-    gs -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sOutputFile=out.pdf *.pdf
+    gs -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sOutputFile=out.pdf ./*.pdf
 }
 
 # Outputs a grayscale copy of $1
@@ -83,9 +83,9 @@ pdf_grayscale ()
 # Prints a random word from the dictionary
 rword ()
 {
-    DICT=/usr/share/dict/words
-    NWORDS=$(wc -l $DICT | cut -d' ' -f1)
-    RAND=$(perl -e "print int rand($NWORDS)")
+    local DICT=/usr/share/dict/words
+    local NWORDS=$(wc -l $DICT | cut -d' ' -f1)
+    local RAND=$(perl -e "print int rand($NWORDS)")
     awk -v lineno="$RAND" 'lineno==NR{print;exit}' $DICT | tr -d '\n'
 }
 
