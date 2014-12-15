@@ -9,7 +9,6 @@ alias la='ls -A'
 alias l='ls -CF'
 
 alias apropos="apropos -a"
-alias grep="grep -F" #force literal grep; use egrep for regex
 alias tree="tree --dirsfirst"
 alias hex="od -tx1 -w16 -Ax"
 
