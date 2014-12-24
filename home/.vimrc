@@ -16,6 +16,7 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'mattn/emmet-vim'
 
 call vundle#end()
 filetype plugin indent on
