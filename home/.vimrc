@@ -14,7 +14,6 @@ call vundle#begin()
 
 Plugin 'gmarik/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
-Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'mattn/emmet-vim'
 
@@ -32,12 +31,7 @@ if &t_Co >= 256 || has("gui_running")
   set cursorline
 endif
 
-set laststatus=2
-let g:Powerline_symbols='fancy'
-
-" This breaks powerline when saving this file
-" and it's not necessary anyways. Just use :so %
-"autocmd! bufwritepost .vimrc source %
+autocmd! bufwritepost .vimrc source %
 
 set nobackup
 set noswapfile
@@ -48,7 +42,7 @@ set autoindent
 set number
 set nowrap
 set list
-set listchars=tab:>.,trail:.,extends:~,nbsp:.
+set listchars=trail:·,extends:~,tab:»· " \ubb\ub7
 
 set incsearch    " searches as characters are typed
 set hlsearch     " highlight all search results
