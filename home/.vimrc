@@ -1,5 +1,6 @@
 "
 " see also /etc/vim/vimrc
+"          /usr/share/vim
 "
 
 " ==== Vundle setup and plugins ==========================================
@@ -44,6 +45,7 @@ set nowrap
 set list
 set listchars=trail:·,extends:~,tab:»· " \ubb\ub7
 
+set ignorecase
 set incsearch    " searches as characters are typed
 set hlsearch     " highlight all search results
                  " :noh clears highlights (see mappings)
