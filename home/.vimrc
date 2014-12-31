@@ -30,10 +30,14 @@ if &t_Co >= 256 || has("gui_running")
   set background=dark
   colorscheme solarized
   set cursorline
+
+  " bg color delimiting the 80 char margin
+  let &colorcolumn=join(range(81,999),",")
 endif
 
 autocmd! bufwritepost .vimrc source %
 
+set textwidth=80 " autowrap when writing
 set nobackup
 set noswapfile
 set tabstop=4    " how many columns a tab counts for
