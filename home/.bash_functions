@@ -89,3 +89,9 @@ rword ()
     awk -v lineno="$RAND" 'lineno==NR{print;exit}' $DICT | tr -d '\n'
 }
 
+# Haskell ctags for the current directory tree (hint: run this inside src/)
+htags ()
+{
+    echo ':ctags' | ghci -v0 $(find -name '*.hs')
+}
+
