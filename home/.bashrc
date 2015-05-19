@@ -19,7 +19,7 @@ fi
 
 if [ -f ~/.bash_functions ]; then
     . ~/.bash_functions
-    PROMPT_COMMAND='GIT_BRANCH="$(__git_branch)";SVN_BRANCH="$(__svn_branch)"'
+    PROMPT_COMMAND='SANDBOXED="$(__sandboxed)";GIT_BRANCH="$(__git_branch)";SVN_BRANCH="$(__svn_branch)"'
 fi
 
 # enable programmable completion features (you don't need to enable
@@ -33,9 +33,9 @@ fi
 export PROMPT_DIRTRIM=3
 
 if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-    PS1='\n\[\e[32m\]\u\[\e[00m\]: \[\e[34m\]\w \[\e[35m\]${GIT_BRANCH}\[\e[36m\]${SVN_BRANCH}\[\e[0m\]\n\$ '
+    PS1='\n\[\e[32m\]\u\[\e[0m\]: \[\e[34m\]\w \[\e[33m\]${SANDBOXED}\[\e[35m\]${GIT_BRANCH}\[\e[36m\]${SVN_BRANCH}\[\e[0m\]\n\$ '
 else
-    PS1='\n\u: \w ${GIT_BRANCH}${SVN_BRANCH}\n\$ '
+    PS1='\n\u: \w ${SANDBOXED}${GIT_BRANCH}${SVN_BRANCH}\n\$ '
 fi
 
 # Load RVM into a shell session *as a function*

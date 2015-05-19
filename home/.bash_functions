@@ -13,6 +13,25 @@ __svn_branch ()
     sed -Ee's#^.*/((trunk|branches|tags).*)#[\1]#'
 }
 
+__sandboxed()
+{
+    CABAL_FILE=$(find . -maxdepth 1 -iname '*.cabal')
+    if test -f "$CABAL_FILE"
+    then
+        if test -f cabal.sandbox.config
+        then
+            echo -ne "[S]"
+        else
+            echo -ne "["'!'"]"
+        fi
+    else
+        if test -f cabal.sandbox.config
+        then
+            echo -ne "[S]"
+        fi
+    fi
+}
+
 # Prints a table with all FGs and BGs combinations
 # (I don't remember where I got this from, but it's not mine)
 colors ()
