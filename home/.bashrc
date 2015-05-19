@@ -41,12 +41,12 @@ fi
 # Load RVM into a shell session *as a function*
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
-# Haskell binaries (sandboxed binaries, ghc, cabal, happy, alex)
-PATH="./.cabal-sandbox/bin:$HOME/.cabal/bin:/opt/cabal/1.20/bin:$PATH"
-PATH="/opt/ghc/7.8.3/bin:/opt/happy/1.19.4/bin:/opt/alex/3.1.3/bin:$PATH"
-
 # Add RVM to PATH for scripting
 PATH="$PATH:$HOME/.rvm/bin"
+
+# Haskell binaries (sandboxed binaries, ghc, cabal, happy, alex)
+PATH="$HOME/.cabal/bin:$HOME/bin/.cabal-sandbox/bin:/opt/cabal/1.20/bin:$PATH"
+PATH="/opt/ghc/7.8.4/bin:/opt/happy/1.19.4/bin:/opt/alex/3.1.3/bin:$PATH"
 
 # My bin folder
 PATH="$HOME/bin:$PATH"
