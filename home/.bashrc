@@ -33,7 +33,7 @@ fi
 export PROMPT_DIRTRIM=3
 
 if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-    PS1='\n\[\e[32m\]\u\[\e[0m\]: \[\e[34m\]\w \[\e[33m\]${SANDBOXED}\[\e[35m\]${GIT_BRANCH}\[\e[36m\]${SVN_BRANCH}\[\e[0m\]\n\$ '
+    PS1='\n\[\e[34m\]\u\[\e[0m\]: \[\e[1;33m\]\w \[\e[0;35m\]${SANDBOXED}\[\e[35m\]${GIT_BRANCH}\[\e[35m\]${SVN_BRANCH}\[\e[0m\]\n\$ '
 else
     PS1='\n\u: \w ${SANDBOXED}${GIT_BRANCH}${SVN_BRANCH}\n\$ '
 fi

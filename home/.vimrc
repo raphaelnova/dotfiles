@@ -4,6 +4,9 @@
 "
 
 " ==== Vundle setup and plugins ==========================================
+" Git clone it, then :PluginInstall
+" $ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+" And set the terminal color theme as solarized, not to mess up the bg
 
 " see :h vundle for more details or wiki for FAQ
 
