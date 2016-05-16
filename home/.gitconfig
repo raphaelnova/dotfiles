@@ -14,3 +14,6 @@
 	hist = rev-list --oneline --graph HEAD
 [clean]
 	requireForce = false
+[push]
+	default = simple
+
