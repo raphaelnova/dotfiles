@@ -32,6 +32,12 @@ __sandboxed()
     fi
 }
 
+bindiff()
+{
+    cmp -l $1 $2 | \
+      gawk '{printf "%08X %02X %02X\n", $1, strtonum(0$2), strtonum(0$3)}';
+}
+
 # Prints a table with all FGs and BGs combinations
 # (I don't remember where I got this from, but it's not mine)
 colors ()
@@ -56,28 +62,6 @@ colors ()
 
     done
     echo
-}
-
-# cd into a folder and show its contents
-# $ go [ls options] dir
-go ()
-{
-    cd "${!#}"            # last arg
-    if [[ $? != 0 ]]; then return; fi
-
-    ls "${@:1:$(($#-1))}" # all but last
-
-    #... Bash is gross, isn't it? Eek!
-}
-
-# creates a new dir and navigates inside
-# $ mkcd [mkdir options] dir
-mkcd ()
-{
-    mkdir "$@"
-    if [[ $? != 0 ]]; then return; fi
-
-    cd "${!#}"
 }
 
 # Merges all pdf files in the current dir and outputs out.pdf
@@ -112,5 +96,16 @@ rword ()
 htags ()
 {
     echo ':ctags' | ghci -v0 $(find -name '*.hs')
+}
+
+# Log ps output to diagnose memory issues
+log_ps ()
+{
+    while true
+    do
+        date -Iseconds | tee -a ps.log
+        ps faux >> ps.log
+        sleep 1m
+    done
 }
 

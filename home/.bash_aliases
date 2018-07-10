@@ -20,3 +20,9 @@ alias fromhex="perl -ne 's/([0-9a-f]{2})/print chr hex \$1/gie'"
 # 5b62797465735d
 alias tohex="xxd -p"
 
+# Can't ever remember this one
+alias ytsong="youtube-dl --extract-audio --audio-format mp3"
+
+# Remove that last 0a byte inserted by Gedit and VIM
+alias removeeof="perl -pi -e 'chomp if eof'"
+
