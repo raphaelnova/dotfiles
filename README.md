@@ -65,13 +65,12 @@ You can clone as usual, in which case you'll have a folder with all these files
 inside, or you can clone a bare repo and use `$HOME` as your work tree as intended.
 
 After cloning as a bare repo you'll have to populate the work tree with the HEAD
-revision. A `dots reset` should do the trick (beware of any existing dotfile that
-will be overwritten by this!)
+revision. A `dots reset` should do the trick.
 
-> [!WARNING] Watch out for any existing file!
-> Using your `$HOME` as a working tree makes git see any existing files as
-> modified, and a reset will overwrite their contents. Make sure that's what
-> you want, or backup your files.
+> [!WARNING]
+> Watch out for any existing file! Using your `$HOME` as a working tree makes
+> git see any existing files as modified, and a reset will overwrite their
+> contents. Make sure that's what you want, or backup your files.
 
 ```bash
 git clone --bare git@github.com:raphaelnova/dotfiles $HOME/.dotfiles.git
