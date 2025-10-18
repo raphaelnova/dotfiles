@@ -245,10 +245,54 @@ to_gif () {
         echo "Usage: $0 input-video output-gif"
         exit 1
     fi
+    local video="$1"
+    local gif="$2"
 
-    ffmpeg -i "$1" \
+    ffmpeg -hide_banner -log_level error \
+        -i "$video" \
         -vf " [0:v]fps=12,scale=480:-1,split[s0][s1];
               [s0]palettegen=stats_mode=diff[p];
               [s1][p]paletteuse=new=1" \
-        -loop 0 "$2"
+        -loop 0 "$gif"
+}
+
+# Gets a video and an SRT file, fixes the text encoding and EOL
+# and outputs a new video with the subtitles in it.
+subtitle () {
+    local movie="$1"
+    local subs="$2"
+    local dest="${3:-output.mkv}"
+
+    local mime
+    local encoding
+
+    encoding="$(file --brief --mime-encoding "$subs")"
+    if [[ ! "$encoding" == "utf-8" ]]; then
+        local temp_subs
+        temp_subs="$(mktemp /tmp/subs_XXXXX.srt)"
+        iconv -f "$encoding" -t "utf-8" <"$subs" >"$temp_subs"
+        cp "$temp_subs" "$subs"
+        rm "$temp_subs"
+        echo "Converted from $encoding to utf-8."
+    fi
+
+    mime="$(file --brief "$subs")"
+    if [[ "$mime" =~ "CRLF line terminators" ]]; then
+        dos2unix --quiet "$subs"
+        echo "Converted from DOS EOL to Unix EOL."
+    fi
+
+    echo "Processing..."
+    ffmpeg -hide_banner -loglevel error \
+       -i "$movie" -i "$subs" \
+       -map 0:v \
+       -map 0:a \
+       -map 1   \
+       -map_metadata -1 \
+       -map_chapters -1 \
+       -codec copy \
+       -metadata:s:a:0 language=eng \
+       -metadata:s:s:0 language=por \
+       -disposition:s:0 +default+forced \
+       "$dest" -y
 }
