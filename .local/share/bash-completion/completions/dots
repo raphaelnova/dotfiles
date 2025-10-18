@@ -9,7 +9,7 @@
 
 GIT_COMPLETION=/usr/share/bash-completion/completions/git
 if [ -f $GIT_COMPLETION ]; then
-    source "$GIT_COMPLETION"
+    source $GIT_COMPLETION
     __git_complete dots __git_main
 fi
 

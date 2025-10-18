@@ -151,7 +151,7 @@ randStr () {
     echo
 }
 
-# Not my code. Prints an 8bit color pallete.
+# Not my code. Prints the ANSI color pallete.
 colors () {
     local T='gYw'
 
@@ -175,7 +175,7 @@ colors () {
     echo
 }
 
-# Not mine either. Prints a 16bit color pallete.
+# Not mine either. Prints a 256 color pallete
 colors_256 () {
     # 0-7: Standard colors
     # 8-15: High-intensity colors
@@ -216,8 +216,8 @@ set_java () {
     j17) JAVA_NAME="java-1.17.0-openjdk-amd64" ;;
     j11) JAVA_NAME="java-1.11.0-openjdk-amd64" ;;
     j8)  JAVA_NAME="java-1.8.0-openjdk-amd64" ;;
-    *)  echo "Version not recognized! Using default OpenJDK 21"
-        JAVA_NAME="java-1.21.0-openjdk-amd64" ;;
+    *)   echo "Version not recognized! Using default OpenJDK 21"
+         JAVA_NAME="java-1.21.0-openjdk-amd64" ;;
     esac
 
     sudo update-java-alternatives --set "$JAVA_NAME"
