@@ -1,0 +1,15 @@
+#!/bin/bash
+# vi: ft=sh
+# shellcheck disable=SC1090
+
+# bash-autocompletion will source this file when I try
+# autocompleting `dots`. Then this script sources git's
+# autocompletion functions and sets `dots` for the same
+# completions as `git`.
+
+GIT_COMPLETION=/usr/share/bash-completion/completions/git
+if [ -f $GIT_COMPLETION ]; then
+    source "$GIT_COMPLETION"
+    __git_complete dots __git_main
+fi
+
