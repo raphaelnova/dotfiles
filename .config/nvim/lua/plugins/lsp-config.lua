@@ -9,7 +9,7 @@ return {
 		config = function()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 			local lspconfig = require("lspconfig")
-			lspconfig.lua_ls.setup({
+			vim.lsp.config("lua_ls", {
 				settings = {
 					Lua = {
 						diagnostics = {
@@ -18,7 +18,7 @@ return {
 					},
 				},
 			})
-			-- lspconfig.bashls.setup({})
+
 			vim.lsp.enable("bashls")
 
 			vim.lsp.config("lua_ls", { capabilities = capabilities })
@@ -78,7 +78,7 @@ return {
 	},
 	{
 		"mfussenegger/nvim-jdtls",
-		branch = "no-client-found",
+		branch = "master",
 		dependencies = { "mfussenegger/nvim-dap" },
 	},
 }

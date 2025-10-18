@@ -1,5 +1,5 @@
 return {
-	"brenoprata10/nvim-highlight-colors",
+	"raphaelnova/nvim-highlight-colors",
 	config = function()
 		vim.opt.termguicolors = true
 
