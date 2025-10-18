@@ -296,3 +296,39 @@ subtitle () {
        -disposition:s:0 +default+forced \
        "$dest" -y
 }
+
+# Executes a script with trace on (-x) and prepends each line
+# with a timestamp of seconds and nanos. Useful for profiling
+# a script to see where it takes time.
+trace_script () {
+    # shellcheck disable=SC2016
+    # SC2016: Single quotes don't expand expr (that's the goal)
+    local time_fmt='+ $(date "+%s.%N")'$'\t'
+    local script="$1"
+
+    eval "printf '%s<start>\n' \"$time_fmt\""
+    PS4="$time_fmt" bash -x "$script" 2>&1
+}
+
+# Gets the output of `trace_script` and outputs each line with
+# the time elapsed since the previous line (i.e. the time spent
+# running that given line). Filter it with `sort -nr` to order
+# them by slowest first.
+delta_trace () {
+    local src # empty string = awk reads from stdin
+    [[ $# -gt 0 ]] && src="$1"
+
+    awk '
+        NR == 1 {
+            $1="";
+            printf "0.000000  %s\n", $0;
+            last = $2;
+        }
+        NR > 1 && /^\+/ {
+            diff = $2 - last;
+            $1="";
+            printf "%.6f  %s\n", diff, $0;
+            last = $2
+        }
+    ' "$src"
+}

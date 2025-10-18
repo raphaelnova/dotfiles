@@ -46,7 +46,7 @@ RESET='\[\033[00m\]'
 JAVA_BLUE='\[\033[38;2;0;115;150m\]'   # From Oracle's design guide
 JAVA_ORANGE='\[\033[38;2;237;139;0m\]' # From Oracle's design guide
 
-# ~/data/dir [1]  j21  proj  master
+# ~/data/dir [1]  j21  project  master
 # $
 PS1="\\n${BLUE}\\w"
 PS1+="${RESET}"
@@ -58,17 +58,11 @@ PS1+="${YELLOW}\$(__pyvenv)"
 PS1+="${MAGENTA}\$(__git_ps1 \" \\\ue702 %s\")"
 PS1+="${RESET}\\n\\$ "
 
-update_java_home >/dev/null
-
 export EDITOR=nvim
 export XMLLINT_INDENT="    " # Four spaces
 
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 eval "$(direnv hook bash)"
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 [ -s ~/gradle-completion.bash ] && source ~/gradle-completion.bash
 
@@ -81,6 +75,34 @@ path_dirs=(
 PATH="${PATH}$(printf ":%s" "${path_dirs[@]}")"
 export PATH
 
+# Lazy loading NVM - creates shims / wrapper functions to
+# replace the real commands. When called, these shims load
+# NVM with the real functions and unsets themselves. Bash
+# completion is eagerly loaded since it works fine with the
+# shims and it loads fast.
+nvm_cmds=(nvm npm node npx)
+export NVM_DIR="$HOME/.nvm"
+nvm_lazy_load () {
+  unset nvm_lazy_load "$@"
+  [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+}
+for cmd in "${nvm_cmds[@]}"; do
+    # Embed all commands in the new fn so I can unset the array
+    # nvm () { nvm_lazy_load 'nvm' 'npm' 'node' 'npx'; nvm "$@"; }
+    eval "${cmd} () { nvm_lazy_load ${nvm_cmds[*]@Q}; ${cmd} \"\$@\"; }"
+done
+unset nvm_cmds
+[ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"
+
+# Lazy loading SDKMAN - same strategy but simpler for having
+# a single command. On the first call to `sdk` it unsets the
+# shim function and sources sdkman-init.sh
 export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+SDKMAN_COMPLETION="$SDKMAN_DIR/contrib/completion/bash/sdk"
+sdkman_lazy_load () {
+  unset sdkman_lazy_load sdk
+  [ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
+}
+sdk () { sdkman_lazy_load; sdk "$@"; }
+[ -s "$SDKMAN_COMPLETION" ] && source "$SDKMAN_COMPLETION"
 
