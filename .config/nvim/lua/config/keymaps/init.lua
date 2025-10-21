@@ -244,7 +244,7 @@ function M.harpoon()
 	return {
 		{ "M",          harpoon.mark,              desc = "[M]ark Harpoon file." },
 		{ "U",          harpoon.unmark,            desc = "[U]nmark nth Harpoon file." },
-		{ "<TAB>",      harpoon.toggle_quick_menu, desc = "Toggle Harpoon menu." },
+		{ "<leader>H",  harpoon.toggle_quick_menu, desc = "Toggle Harpoon menu." },
 		{ "<leader>fh", harpoon.toggle_telescope,  desc = "Navigate through Harpoon marks using Telescope." },
 		{ "<leader>j",  harpoon.next_mark,         desc = "Jump to next ↓ Harpoon mark." },
 		{ "<leader>k",  harpoon.prev_mark,         desc = "Jump to prev ↑ Harpoon mark." },

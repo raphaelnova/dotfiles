@@ -6,12 +6,30 @@ return {
 		"mfussenegger/nvim-dap",
 		dependencies = {
 			"rcarriga/nvim-dap-ui",
-			"nvim-neotest/nvim-nio",
-			"theHamsta/nvim-dap-virtual-text",
+			"nvim-neotest/nvim-nio",             -- async IO (what for?)
+			"theHamsta/nvim-dap-virtual-text",   -- shows var values while debugging
+			"jbyuki/one-small-step-for-vimkind", -- debug nvim plugins
 		},
 		config = function()
 			local dap = require("dap")
 			local dapui = require("dapui")
+
+			dap.adapters.nlua = function(callback, config)
+				callback({ type = "server", host = config.host, port = config.port })
+			end
+			dap.configurations.lua = {
+				{
+					type = "nlua",
+					request = "attach",
+					name = "Attach to running Neovim instance",
+					host = function()
+						return "127.0.0.1"
+					end,
+					port = function()
+						return tonumber(vim.fn.input("Port: ", "54231"))
+					end,
+				},
+			}
 
 			dapui.setup({
 				expand_lines = true,
@@ -70,8 +88,10 @@ return {
 				-- not their Mason name. See:
 				-- https://github.com/jay-babu/mason-nvim-dap.nvim/blob/main/lua/mason-nvim-dap/mappings/source.lua
 				ensure_installed = {
-					"javadbg", -- "java-debug-adapter"
+					"javadbg",  -- "java-debug-adapter"
 					"javatest", -- "java-test"
+					"python",   -- "debugpy"
+					"bash",     -- "bash-debug-adapter"
 				},
 			})
 		end,

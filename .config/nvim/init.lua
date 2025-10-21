@@ -16,6 +16,7 @@ end
 -- :help 'runtimepath'
 vim.opt.rtp:prepend(lazypath)
 
+require("config.filetypes")
 require("config.options")
 require("config.keymaps")
 require("config.autocmds")

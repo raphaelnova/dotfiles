@@ -63,7 +63,8 @@ export XMLLINT_INDENT="    " # Four spaces
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 eval "$(direnv hook bash)"
 
-[ -s ~/gradle-completion.bash ] && source ~/gradle-completion.bash
+[ -s ~/gradle-completion.bash ] \
+  && source ~/gradle-completion.bash
 
 path_dirs=(
     "$HOME/.local/bin"
@@ -89,14 +90,18 @@ nvm_lazy_load () {
 }
 
 for cmd in "${nvm_cmds[@]}"; do
-    # Embed all commands in the new fn so I can unset the array
+    # Embed all commands in the new fn so I can unset the array.
     # nvm () { nvm_lazy_load 'nvm' 'npm' 'node' 'npx'; nvm "$@"; }
-    eval "${cmd} () { nvm_lazy_load ${nvm_cmds[*]@Q}; ${cmd} \"\$@\"; }"
+    eval "${cmd} () {
+      nvm_lazy_load ${nvm_cmds[*]@Q}
+      ${cmd} \"\$@\"
+    }"
 done
 
 unset nvm_cmds
 
-[ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"
+[ -s "$NVM_DIR/bash_completion" ] \
+  && source "$NVM_DIR/bash_completion"
 
 # Lazy loading SDKMAN - same strategy but simpler for having
 # a single command. On the first call to `sdk` it unsets the
@@ -107,7 +112,8 @@ SDKMAN_COMPLETION="$SDKMAN_DIR/contrib/completion/bash/sdk"
 
 sdkman_lazy_load () {
     unset sdkman_lazy_load sdk
-    [ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
+    [ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ] \
+      && source "$SDKMAN_DIR/bin/sdkman-init.sh"
 }
 
 sdk () { sdkman_lazy_load; sdk "$@"; }

@@ -8,21 +8,21 @@ return {
 		keys = require("config.keymaps").lsp(),
 		config = function()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
-			local lspconfig = require("lspconfig")
+
 			vim.lsp.config("lua_ls", {
 				settings = {
 					Lua = {
 						diagnostics = {
 							disable = { "trailing-space" },
+							globals = { "vim" },
 						},
 					},
 				},
+				capabilities = capabilities,
 			})
+			vim.lsp.enable("lua_ls")
 
 			vim.lsp.enable("bashls")
-
-			vim.lsp.config("lua_ls", { capabilities = capabilities })
-			vim.lsp.enable("lua_ls")
 
 			vim.lsp.config("ts_ls", { capabilities = capabilities })
 			vim.lsp.enable("ts_ls")
