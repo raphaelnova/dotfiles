@@ -51,6 +51,18 @@ function M.toggle_inlay_hints()
 	end
 end
 
+function M.get_fn_toggle_diagnostics_virt()
+	local vtext = 0
+	return function()
+		vtext = (vtext + 1) % 3
+		vim.diagnostic.config({
+			-- disabled   = vtext == 0
+			virtual_text  = vtext == 1,
+			virtual_lines = vtext == 2,
+		})
+	end
+end
+
 ---Get out of pairs in insert mode without having to type the closing match
 function M.exit_treesitter_node()
 	local node = vim.treesitter.get_node()
@@ -130,18 +142,11 @@ function M.harpoon.nth_mark()
 	local nth = vim.v.count
 	local harpoon = require("harpoon")
 	vim.schedule(function()
-		-- nvim won't let me change the buffer during a keymap function
-		-- giving "E565: Not allowed to change text or change window"
-		-- so I need to schedule the change so it happens after this
-		-- keymap execution
 		if nth == 0 then
 			harpoon:list():next({ ui_nav_wrap = true })
 		else
 			harpoon:list():select(nth)
 		end
-		-- It's weird that defer_fn takes a timeout param and schedule
-		-- does not, should be the other way. When you schedule you choose
-		-- the timing, when you defer you don't
 	end)
 end
 

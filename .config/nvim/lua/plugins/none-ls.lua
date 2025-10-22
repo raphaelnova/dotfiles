@@ -4,7 +4,6 @@ return {
 		dependencies = {
 			"nvimtools/none-ls-extras.nvim", -- for eslint_d
 		},
-		keys = require("config.keymaps").none_ls(),
 		config = function()
 			local none_ls = require("null-ls") -- using old fork's name, BAU
 			none_ls.setup({
@@ -17,6 +16,7 @@ return {
 					none_ls.builtins.formatting.prettier,           -- Anything else
 				},
 			})
+			require("config.keymaps").none_ls()
 		end,
 	},
 	{

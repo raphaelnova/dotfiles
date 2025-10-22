@@ -40,7 +40,7 @@ return {
 			})
 
 			telescope.load_extension("ui-select")
-			keymaps.evalLazyKeysSpecs(keymaps.telescope())
+			keymaps.telescope()
 		end,
 	},
 }

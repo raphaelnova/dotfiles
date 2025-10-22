@@ -1,6 +1,5 @@
 return {
 	"nvim-tree/nvim-tree.lua",
-	keys = require("config.keymaps").nvim_tree(),
 	config = function()
 		-- :h nvim-tree-quickstart-help
 		require("nvim-tree").setup({
@@ -31,5 +30,6 @@ return {
 				},
 			},
 		})
+		require("config.keymaps").nvim_tree()
 	end,
 }

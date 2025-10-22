@@ -3,7 +3,6 @@ return {
 	branch = "harpoon2",
 	event = "VeryLazy",
 	dependencies = { "nvim-lua/plenary.nvim" },
-	keys = require("config.keymaps").harpoon(),
 	config = function()
 		local harpoon = require("harpoon")
 		local extensions = require("harpoon.extensions").builtins
@@ -11,5 +10,7 @@ return {
 		harpoon:setup()
 		harpoon:extend(extensions.highlight_current_file())
 		harpoon:extend(extensions.navigate_with_number())
+
+		require("config.keymaps").harpoon()
 	end,
 }
