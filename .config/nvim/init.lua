@@ -42,4 +42,19 @@ require("lazy").setup("plugins", {
 		enable = true,  -- Auto check for updates
 		notify = true,  -- Update notifications
 	},
+	performance = {
+		rtp = {
+			disabled_plugins = {
+				"gzip",
+				"matchit",
+				"matchparen",
+				"netrw",
+				"netrwPlugin",
+				"tarPlugin",
+				"tohtml",
+				"tutor",
+				"zipPlugin",
+			},
+		},
+	},
 })

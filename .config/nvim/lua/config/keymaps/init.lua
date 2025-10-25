@@ -10,6 +10,9 @@ local cmd = vim.api.nvim_create_user_command
 ---Base keymaps that don't depend on any plugin
 function M.vanilla()
 
+	map("n", "<leader>C", f.rotate_colorscheme, { desc = "Rotate colorschemes." })
+	map("n", "<leader>r", "<cmd>restart<cr>",   { desc = "Restart." })
+
 	-- Help / Diagnostics
 	map("n", "<leader>ck", f.check_keys,                       { desc = "Check keys and print maps, if any." })
 	map("n", "<leader>xv", f.get_fn_toggle_diagnostics_virt(), { desc = 'Toggle diagnostic virtual_text', expr = true })

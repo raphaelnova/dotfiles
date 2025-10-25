@@ -72,6 +72,18 @@ function M.exit_treesitter_node()
 	end
 end
 
+local colorscheme_idx = 1
+function M.rotate_colorscheme()
+	local colorschemes = vim.g.colorschemes
+	local count = #colorschemes
+
+	colorscheme_idx = colorscheme_idx % count + 1
+	local name = colorschemes[colorscheme_idx]
+
+	vim.cmd.colorscheme(name)
+	vim.notify(string.format("%d/%d: %s", colorscheme_idx, count, name))
+end
+
 ---Highlights the current buffer in NvimTree
 function M.nvim_tree_hl()
 	require("nvim-tree.api").tree.find_file({ buf = vim.fn.bufnr() })
