@@ -22,6 +22,7 @@ return {
 			})
 			vim.lsp.enable("lua_ls")
 
+			vim.lsp.config("bashls", { capabilities = capabilities })
 			vim.lsp.enable("bashls")
 
 			vim.lsp.config("ts_ls", { capabilities = capabilities })

@@ -21,6 +21,7 @@ require("config.options")
 require("config.keymaps")
 require("config.autocmds")
 require("config.folds")
+require("config.treesitter.predicates")
 
 vim.diagnostic.config({
 	signs = {
