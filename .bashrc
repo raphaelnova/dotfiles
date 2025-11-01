@@ -103,20 +103,14 @@ unset nvm_cmds
 [ -s "$NVM_DIR/bash_completion" ] \
   && source "$NVM_DIR/bash_completion"
 
-# Lazy loading SDKMAN - same strategy but simpler for having
-# a single command. On the first call to `sdk` it unsets the
-# shim function and sources sdkman-init.sh
+# Not lazy loading SDKMAN anymore because it's quick
+# to load and not doing it leaves my shell javaless.
 
 export SDKMAN_DIR="$HOME/.sdkman"
 SDKMAN_COMPLETION="$SDKMAN_DIR/contrib/completion/bash/sdk"
 
-sdkman_lazy_load () {
-    unset sdkman_lazy_load sdk
-    [ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ] \
-      && source "$SDKMAN_DIR/bin/sdkman-init.sh"
-}
+[[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] \
+  && source "$SDKMAN_DIR/bin/sdkman-init.sh"
 
-sdk () { sdkman_lazy_load; sdk "$@"; }
-
-[ -s "$SDKMAN_COMPLETION" ] && source "$SDKMAN_COMPLETION"
+[[ -s "$SDKMAN_COMPLETION" ]] && source "$SDKMAN_COMPLETION"
 

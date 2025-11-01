@@ -34,32 +34,33 @@ __bg_jobs () {
 # version active. Used in PS1.
 __javaversion () {
     if command -v java >/dev/null 2>&1 && [ -n "$(__marker_path pom.xml)" ]; then
-        local version
-        version="$(java -version 2>&1)"
-        case "$version" in
-            # Azul JDK
-            *Zulu21*)     local JAVA_VERSION="z21" ;;
-            *Zulu17*)     local JAVA_VERSION="z17" ;;
-            *Zulu11*)     local JAVA_VERSION="z11" ;;
+        local curr_version
+        local output_version="??"
 
+        curr_version="$(java -version 2>&1)"
+
+        case "$curr_version" in
             # Eclipse Temurin
-            *Temurin-23*) local JAVA_VERSION="t23" ;;
-            *Temurin-25*) local JAVA_VERSION="t25" ;;
-
-            # OpenJDK
-            *build\ 21*)  local JAVA_VERSION="j21" ;;
-            *build\ 17*)  local JAVA_VERSION="j17" ;;
-            *build\ 11*)  local JAVA_VERSION="j11" ;;
-            *build\ 1.8*) local JAVA_VERSION="j8"  ;;
-
-            # What?
-            *)            local JAVA_VERSION="??"  ;;
+            *Temurin-*)
+                [[ "$curr_version" =~ Temurin-([0-9]+) ]] \
+                  && output_version="${BASH_REMATCH[1]}-tem"
+                ;;
+            # Azul JDK
+            *Zulu*)
+                [[ "$curr_version" =~ Zulu([0-9]+) ]] \
+                  && output_version="${BASH_REMATCH[1]}-zulu"
+                ;;
+            # Ubuntu OpenJDK
+            *Ubuntu*)
+                [[ "$curr_version" =~ \(build\ ([0-9]+) ]] \
+                  && output_version="${BASH_REMATCH[1]}-ubuntu"
+                ;;
         esac
 
         # https://www.nerdfonts.com/cheat-sheet
         # nf-fae-coffe_beans e26a
         # nf-cod-coffee ec15
-        printf " \\uec15 %s" "$JAVA_VERSION"
+        printf " \\uec15 %s" "$output_version"
     fi
 }
 
