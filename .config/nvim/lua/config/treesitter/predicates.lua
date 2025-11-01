@@ -1,3 +1,7 @@
+---Internal vim.treesitter class representing a node in the syntax tree.
+---See `:help TSNode` for a list of methods.
+---@class vim.treesitter.TSNode
+
 ---Given a predicate, returns a new one that's the negation of the first.
 ---@param fn fun(...): boolean A predicate to negate
 ---@return function # A predicate that's the negation of `fn`.
@@ -11,7 +15,7 @@ end
 ---E.g. `((identifier) @id (#preceded-by? @id generic_type))`
 ---Finds a Java method or param with a generic type
 ---See `:help vim.treesitter.query.add_directive` for more details.
----@param match table<integer, TSNode[]> A table mapping capture ids to a list of nodes
+---@param match table<integer, vim.treesitter.TSNode[]> A table mapping capture ids to a list of nodes
 ---@param pattern integer Index of the current pattern in the query.
 ---@param source integer|string Buffer handle of the source text.
 ---@param predicate table List of strings containing the full predicate, e.g. { "eq?", 1, "value" }

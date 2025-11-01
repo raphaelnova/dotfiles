@@ -22,6 +22,7 @@ return {
 				"python",
 				"query",
 				"typescript",
+				"sql",
 				"vim",
 				"vimdoc",
 				"xml",

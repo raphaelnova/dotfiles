@@ -36,6 +36,5 @@
       (simple_expansion)
     ] @input_file .
  )
- (#set! injection.language "awk")
- (#set! injection.combined))
+ (#set! injection.language "awk"))
 
