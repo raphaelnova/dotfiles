@@ -10,10 +10,10 @@
 ;;
 ((command
     [
-	   (command_name)
-	   (word)
-	 ]	@cmd (#eq? @cmd "bash")
-	 (word) @arg (#eq? @arg "-c")
+      (command_name)
+      (word)
+    ] @cmd (#eq? @cmd "bash")
+    (word) @arg (#eq? @arg "-c")
     [
       (string) @injection.content
       (raw_string) @injection.content
