@@ -12,9 +12,20 @@ return {
 			vim.lsp.config("lua_ls", {
 				settings = {
 					Lua = {
+						runtime = { version = "LuaJIT" },
 						diagnostics = {
 							disable = { "trailing-space" },
 							globals = { "vim" },
+						},
+						workspace = {
+							-- Make the server aware of these APIs for autocomplete
+							library = {
+								-- Neovim's api (vim.*)
+								vim.env.VIMRUNTIME,
+								-- luarocks libs (luv for async IO and busted for TDD)
+								'${3rd}/luv/library',
+								'${3rd}/busted/library',
+							}
 						},
 					},
 				},
