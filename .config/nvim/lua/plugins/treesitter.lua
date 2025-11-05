@@ -1,11 +1,12 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
+	branch = "main",
 	dependencies = {
 		"windwp/nvim-ts-autotag",
 	},
 	build = ":TSUpdate",
 	config = function()
-		require("nvim-treesitter.configs").setup({
+		require("nvim-treesitter.config").setup({
 			ensure_installed = {
 				"awk",
 				"bash",

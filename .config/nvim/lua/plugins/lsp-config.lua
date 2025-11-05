@@ -25,6 +25,8 @@ return {
 								-- luarocks libs (luv for async IO and busted for TDD)
 								'${3rd}/luv/library',
 								'${3rd}/busted/library',
+								-- Lazy plugins
+								vim.fn.stdpath("data") .. "/lazy/nvim-treesitter/lua",
 							}
 						},
 					},
