@@ -1,0 +1,5 @@
+[user]
+	email = contact@raphaelnova.info
+	name = Raphael Nova
+[alias]
+	list = ls-tree --full-tree -r --name-only
