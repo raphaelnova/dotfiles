@@ -227,17 +227,134 @@ set_java () {
     update_java_home
 }
 
-# Gets git commit hashes from the history and shows each
-# commit in chronological order. Make sure not to use it
-# in large projects because this is not limiting how many
-# commits to show.
+# Calculates how many lines a string will take on screen, taking
+# into consideration the line wraps over the number of columns.
+calc_lines () {
+  local output="$1"
+  local term_width
+  term_width="$(tput cols 2>/dev/null || echo 80)"
+
+  fold --width "$term_width" <(echo "$output" ) | wc -l
+}
+
+# Gets git commit hashes from the history and shows each commit
+# in chronological order. Accepts `git log` ranges to limit the
+# number of commits to show and displays a number of commits of
+# context.
 traverse_git_hist() {
-    git log --pretty=format:"%H" \
-        | cat - <(echo) \
-        | tac \
-        | while read -r line; do
-              git show "$line"
-          done
+  local header_style="\e[1;31m"
+  local counter_style="\e[34m"
+  local reset="\e[0m"
+
+  local commits
+  readarray -t commits < <(git log --reverse --oneline --color=always "$@")
+  local total_commits="${#commits[@]}"
+  local digits="${#total_commits}"
+
+  # How many commits to show before and after the current commit
+  local context=2
+
+  local header="${header_style}== COMMITS (OLDEST TO NEWEST): ==${reset}"
+  local start_prompt="Press Q to quit, or Enter to iterate over all these commits. "
+  local counter_fmt="${counter_style}%${digits}d/%d${reset}"
+
+  local total_lines
+  total_lines="$(calc_lines "$(
+    echo "${header}"
+    printf "%s\n" "${commits[@]}"
+    echo -e "\n$start_prompt")"
+  )"
+
+  # Pages with color if in terminal and output exceeds term height
+  if [[ -t 1 && $total_lines -gt $(tput lines) ]]; then
+    local pager="less -R"
+  else
+    local pager="cat"
+  fi
+
+  clear
+
+  {
+    # Prints the full list of commits to iterate over
+    #
+    # 01/12 > a1b2c3d4 Commit msg
+    # 02/12   a1b2c3d4 Commit msg
+    # 03/12   a1b2c3d4 Commit msg
+    # ...
+    #
+    echo -e "$header"
+    for ((i = 0; i < total_commits; i++)); do
+      # shellcheck disable=SC2059
+      printf "$counter_fmt" "$((i + 1))" "$total_commits"
+      if [[ $i == 0 ]]; then
+        printf " > "
+      else
+        printf "   "
+      fi
+      printf "%s\n" "${commits[i]}"
+    done
+    echo
+  } | $pager
+
+  read -p "$start_prompt" -rsn 1 choice
+  [[ "$choice" =~ ^[qQ]$ ]] && return
+
+  local first=true
+  for ((i = 0; i < total_commits; i++)); do
+    # We already showed a list and a prompt for the first commit, this is for
+    # the second onwards. Show commit surrounded by a context and prompts for
+    # continuing.
+    if ! $first; then
+
+      # Adjust context window start and end indexes
+      if ((i < context)); then
+        # Commit is before the middle of the window
+        start=0
+        end=$((4 < total_commits ? 4 : total_commits - 1))
+      elif ((i > total_commits - context - 1)); then
+        # Commit after the middle of the window
+        local window_size=$((context * 2 + 1))
+        start=$((total_commits - window_size < 0 ? 0 : total_commits - window_size))
+        end=$((total_commits - 1))
+      else
+        # Commit at the middle
+        start=$((i - context))
+        end=$((i + context))
+      fi
+
+      # Printing the context window
+      ((start > 0)) && echo "..." || echo
+      for ((j = start; j <= end; j++)); do
+        # 02/12   abcd1234 Commit msg
+        # 03/12 > abcd1234 Commit msg
+        # 04/12   abcd1234 Commit msg
+
+        # shellcheck disable=SC2059
+        printf "$counter_fmt" "$((j + 1))" "$total_commits"
+
+        if ((j == i)); then
+          printf " > %s\n" "${commits[j]}"
+        else
+          printf "   %s\n" "${commits[j]}"
+        fi
+      done
+      ((end < total_commits - 1)) && echo "..." || echo
+
+      echo
+      read -p "Press Q to quit, S to skip or Enter to continue." -rsn 1 choice
+      [[ "$choice" =~ ^[qQ]$ ]] && return
+      [[ "$choice" =~ ^[sS]$ ]] && clear && continue
+    fi
+
+    clear
+    local commit_hash
+    commit_hash="$(echo -n "${commits[i]}" | sed 's/\x1B\[[0-9;]*m//g' | cut -d' ' -f1)"
+    # Print colors with -R, force pager with -+F
+    GIT_PAGER="less -R -+F" git show "$commit_hash"
+
+    first=false
+    clear
+  done
 }
 
 # Given a video file, outputs a 480w gif from it.
