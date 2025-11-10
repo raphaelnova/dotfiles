@@ -10,7 +10,11 @@ return {
 				sources = {
 					require("none-ls.diagnostics.eslint_d"),        -- JS
 					none_ls.builtins.formatting.stylua,             -- Lua
-					none_ls.builtins.formatting.shfmt,              -- Shell/Bash
+					none_ls.builtins.formatting.shfmt.with({        -- Shell/Bash
+						filetypes = { "sh", "bash", },
+						-- Google Style, as seen on patrickvane/shfmt
+						extra_args = { "-i", "2", "-ci" },
+					}),
 					none_ls.builtins.formatting.google_java_format, -- Java
 					none_ls.builtins.formatting.xmllint,            -- XML
 					none_ls.builtins.formatting.black,              -- Python

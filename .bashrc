@@ -4,10 +4,10 @@
 
 # Check for TTY, interactive non-login shell and no tmux session
 if tty -s && ! shopt -q login_shell && [[ "$-" == *i* && -z "$TMUX" ]]; then
-    if [[ "$TERM_PROGRAM" != "vscode" ]]; then
-        tmux
-        exit
-    fi
+  if [[ "$TERM_PROGRAM" != "vscode" ]]; then
+    tmux
+    exit
+  fi
 fi
 
 HISTSIZE=1000
@@ -24,11 +24,11 @@ eval "$(dircolors -b ~/.config/bash/dircolors)"
 # You don't need to enable this, if it's already
 # enabled in /etc/bash.bashrc.
 if ! shopt -oq posix; then
-    if [ -f /usr/share/bash-completion/bash_completion ]; then
-        source /usr/share/bash-completion/bash_completion
-    elif [ -f /etc/bash_completion ]; then
-        source /etc/bash_completion
-    fi
+  if [[ -f /usr/share/bash-completion/bash_completion ]]; then
+    source /usr/share/bash-completion/bash_completion
+  elif [[ -f /etc/bash_completion ]]; then
+    source /etc/bash_completion
+  fi
 fi
 
 export PROMPT_DIRTRIM=3
@@ -63,14 +63,13 @@ export XMLLINT_INDENT="    " # Four spaces
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 eval "$(direnv hook bash)"
 
-[ -s ~/gradle-completion.bash ] \
-  && source ~/gradle-completion.bash
+[[ -s ~/gradle-completion.bash ]] && source ~/gradle-completion.bash
 
 path_dirs=(
-    "$HOME/.local/bin"
-    "$HOME/bin"
-    "/opt/gradle/gradle-8.14.1/bin"
-    "/opt/apache-maven-3.9.10/bin"
+  "$HOME/.local/bin"
+  "$HOME/bin"
+  "/opt/gradle/gradle-8.14.1/bin"
+  "/opt/apache-maven-3.9.10/bin"
 )
 PATH="${PATH}$(printf ":%s" "${path_dirs[@]}")"
 export PATH
@@ -84,15 +83,15 @@ export PATH
 nvm_cmds=(nvm npm node npx)
 export NVM_DIR="$HOME/.nvm"
 
-nvm_lazy_load () {
-    unset nvm_lazy_load "$@"
-    [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+nvm_lazy_load() {
+  unset nvm_lazy_load "$@"
+  [[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
 }
 
 for cmd in "${nvm_cmds[@]}"; do
-    # Embed all commands in the new fn so I can unset the array.
-    # nvm () { nvm_lazy_load 'nvm' 'npm' 'node' 'npx'; nvm "$@"; }
-    eval "${cmd} () {
+  # Embed all commands in the new fn so I can unset the array.
+  # nvm () { nvm_lazy_load 'nvm' 'npm' 'node' 'npx'; nvm "$@"; }
+  eval "${cmd} () {
       nvm_lazy_load ${nvm_cmds[*]@Q}
       ${cmd} \"\$@\"
     }"
@@ -100,8 +99,8 @@ done
 
 unset nvm_cmds
 
-[ -s "$NVM_DIR/bash_completion" ] \
-  && source "$NVM_DIR/bash_completion"
+[[ -s "$NVM_DIR/bash_completion" ]] &&
+  source "$NVM_DIR/bash_completion"
 
 # Not lazy loading SDKMAN anymore because it's quick
 # to load and not doing it leaves my shell javaless.
@@ -109,8 +108,7 @@ unset nvm_cmds
 export SDKMAN_DIR="$HOME/.sdkman"
 SDKMAN_COMPLETION="$SDKMAN_DIR/contrib/completion/bash/sdk"
 
-[[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] \
-  && source "$SDKMAN_DIR/bin/sdkman-init.sh"
+[[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] &&
+  source "$SDKMAN_DIR/bin/sdkman-init.sh"
 
 [[ -s "$SDKMAN_COMPLETION" ]] && source "$SDKMAN_COMPLETION"
-
