@@ -16,8 +16,8 @@ HISTCONTROL=ignoreboth # No duplicates or empty lines
 shopt -s histappend
 shopt -s cdspell
 
-source ~/.config/bash/aliases.sh
-source ~/.config/bash/functions.sh
+source ~/.config/bash/aliases.bash
+source ~/.config/bash/functions.bash
 eval "$(dircolors -b ~/.config/bash/dircolors)"
 
 # Enable programmable completion features.
