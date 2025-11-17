@@ -39,10 +39,6 @@ require("lazy").setup("plugins", {
 	change_detection = {
 		notify = false, -- # Config change detected. Reloading...
 	},
-	checker = {
-		enable = true,  -- Auto check for updates
-		notify = true,  -- Update notifications
-	},
 	performance = {
 		rtp = {
 			disabled_plugins = {
