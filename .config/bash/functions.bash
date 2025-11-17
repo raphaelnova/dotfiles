@@ -361,19 +361,15 @@ traverse_git_hist() {
 
 # Given a video file, outputs a 480w gif from it.
 to_gif() {
-  if [ "$#" -ne 2 ]; then
-    echo "Usage: $0 input-video output-gif"
-    exit 1
-  fi
   local video="$1"
-  local gif="$2"
+  local gif="${2:-${video%.*}.gif}"
 
-  ffmpeg -hide_banner -log_level error \
-    -i "$video" \
+  ffmpeg -hide_banner -loglevel error \
+    -i "${video}" \
     -vf " [0:v]fps=12,scale=480:-1,split[s0][s1];
               [s0]palettegen=stats_mode=diff[p];
               [s1][p]paletteuse=new=1" \
-    -loop 0 "$gif"
+    -loop 0 "${gif}"
 }
 
 # Gets a video and an SRT file, fixes the text encoding and EOL

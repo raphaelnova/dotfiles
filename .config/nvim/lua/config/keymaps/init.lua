@@ -13,6 +13,10 @@ function M.vanilla()
 	map("n", "<leader>C", f.rotate_colorscheme, { desc = "Rotate colorschemes." })
 	map("n", "<leader>r", "<cmd>restart<cr>",   { desc = "Restart." })
 
+	-- Record macros with <leader>q
+	map("n", "q", "<nop>",     { noremap = true, silent = true })
+	map("n", "<leader>q", "q", { noremap = true, silent = true, desc = "Record macro" })
+
 	-- Help / Diagnostics
 	map("n", "<leader>ck", f.check_keys,                       { desc = "Check keys and print maps, if any." })
 	map("n", "<leader>xv", f.get_fn_toggle_diagnostics_virt(), { desc = 'Toggle diagnostic virtual_text', expr = true })
