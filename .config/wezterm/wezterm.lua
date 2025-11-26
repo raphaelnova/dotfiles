@@ -1,6 +1,8 @@
+--- @type Wezterm
 local wezterm = require("wezterm")
 local colors = require("colors")
 
+--- @type table|Config
 local config = {}
 if wezterm.config_builder then
   config = wezterm.config_builder()

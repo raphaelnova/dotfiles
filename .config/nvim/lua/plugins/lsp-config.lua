@@ -27,6 +27,8 @@ return {
 								'${3rd}/busted/library',
 								-- Lazy plugins
 								vim.fn.stdpath("data") .. "/lazy/nvim-treesitter/lua",
+								-- Other libs
+								"/home/raphael/data/code/3rd-party/wezterm-types",
 							}
 						},
 					},
