@@ -6,6 +6,7 @@ return {
 	},
 	build = ":TSUpdate",
 	config = function()
+		---@diagnostic disable [missing-fields]
 		require("nvim-treesitter.configs").setup({
 			ensure_installed = {
 				"awk",
@@ -27,6 +28,7 @@ return {
 				"vim",
 				"vimdoc",
 				"xml",
+				"yaml",
 			},
 			highlight = { enable = true },
 			autotag = { enable = true },

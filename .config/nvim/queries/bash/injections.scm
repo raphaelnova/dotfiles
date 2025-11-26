@@ -41,6 +41,7 @@
       (concatenation ((_)+ @injection.content))
     ] @program .
  )
+ (#offset! @injection.content 0 1 0 -1)
  (#set! injection.language "awk")
  (#set! injection.combined))
 
@@ -63,5 +64,6 @@
       (simple_expansion)
     ] @input_file .
  )
+ (#offset! @injection.content 0 1 0 -1)
  (#set! injection.language "awk"))
 

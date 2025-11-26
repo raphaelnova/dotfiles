@@ -16,6 +16,8 @@ function M.vanilla()
 	-- Record macros with <leader>q
 	map("n", "q", "<nop>",     { noremap = true, silent = true })
 	map("n", "<leader>q", "q", { noremap = true, silent = true, desc = "Record macro" })
+	-- Quit with :Q
+	map("c", "Q", "q")
 
 	-- Help / Diagnostics
 	map("n", "<leader>ck", f.check_keys,                       { desc = "Check keys and print maps, if any." })
