@@ -18,16 +18,38 @@ __marker_path() {
   done
 }
 
+__job_count() {
+  # Count only stopped and running jobs
+  jobs | grep -cE 'Running|Stopped'
+}
+
 # Prints a count of suspended jobs. Used in PS1 so I don't
 # lose track of a suspended nvim and `exec bash` losing it
 # in the void.
 __bg_jobs() {
   local job_count
-  # Count only suspended processes (not ending in &)
-  job_count="$(jobs | grep -cvE '&$')"
-  if [[ "$job_count" -gt 0 ]]; then
-    printf " [%s]" "$job_count"
+
+  job_count="$(__job_count)"
+  if [[ "${job_count}" -gt 0 ]]; then
+    printf " [%s]" "${job_count}"
   fi
+}
+
+# Prompts at exit if there are any background jobs
+# (because I keep creating orphan processes despite
+# putting a count in my PS1)
+exit() {
+  local job_count
+  local reply
+
+  job_count="$(__job_count)"
+  if (( job_count > 0 )); then
+    # shellcheck disable=SC2162
+    read -n1 -p "You have ${job_count} background job(s). Exit anyway? [y/N]: " reply
+    [[ "${reply}" == "y" || "${reply}" == "Y" ]] || return
+  fi
+
+  builtin exit
 }
 
 # Prints a short identifier to indicate the current Java
