@@ -1,5 +1,4 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
--- vim.fn.stdpath("data") => ~/.local/share/nvim
 
 -- Check whether Lazy has been cloned, and clone it otherwise.
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -26,10 +25,10 @@ require("config.treesitter.predicates")
 vim.diagnostic.config({
 	signs = {
 		text = {
-			[vim.diagnostic.severity.ERROR] = "✘",
-			[vim.diagnostic.severity.WARN]  = "▲",
-			[vim.diagnostic.severity.HINT]  = "⚑",
-			[vim.diagnostic.severity.INFO]  = "»",
+			[vim.diagnostic.severity.ERROR] = "✖", -- \u2716 - Heavy Multiplication X
+			[vim.diagnostic.severity.WARN]  = "▲", -- \u25b2 - Black up-pointing triangle
+			[vim.diagnostic.severity.INFO]  = "⚑", -- \u2691 - Black flag
+			[vim.diagnostic.severity.HINT]  = "✚", -- \u271a - Heavy greek cross
 		},
 	},
 })

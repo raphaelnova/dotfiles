@@ -1,5 +1,13 @@
 local buffer_group = vim.api.nvim_create_augroup("buf_cmds", { clear = true })
 
+vim.api.nvim_create_autocmd("LspAttach", {
+	pattern = "*",
+	callback = function()
+		vim.lsp.document_color.enable(false)
+		-- vim.lsp.document_color.enable(true, 0, { style = 'virtual' })
+	end
+})
+
 -- Config module hot-reload
 vim.api.nvim_create_autocmd("BufWritePost", {
 	pattern = "lua/config/*.lua",
@@ -25,3 +33,24 @@ vim.api.nvim_create_autocmd({ "InsertEnter", "InsertLeave" }, {
 	end,
 })
 
+--
+-- Highlight trailing spaces only out of insert mode
+--
+vim.api.nvim_create_autocmd("BufWinEnter", {
+	-- Match trailing spaces and highlight them
+	callback = function()
+		vim.fn.matchadd("TrailingWhitespace", "\\s\\+$")
+	end,
+})
+vim.api.nvim_create_autocmd("InsertEnter", {
+	-- Disable trailing spaces highilighting when in Insert mode
+	callback = function()
+		vim.api.nvim_set_hl(0, "TrailingWhitespace", { link = "Whitespace" })
+	end,
+})
+vim.api.nvim_create_autocmd("InsertLeave", {
+	-- Enable trailing spaces highilighting when out of Insert mode
+	callback = function()
+		vim.api.nvim_set_hl(0, "TrailingWhitespace", { link = "TrailingWhitespaceStyle" })
+	end,
+})
