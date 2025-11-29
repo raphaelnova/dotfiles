@@ -55,7 +55,7 @@ config.hide_tab_bar_if_only_one_tab = true
 -- enable_tab_bar = false,
 
 -- Use Alt+Space for window menu, Alt+F7 for moving the window
-config.window_decorations = "NONE"
+config.window_decorations = "RESIZE"
 -- Make the title bar and the tab bar one and the same (fancy or not)
 -- config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
 
@@ -65,5 +65,8 @@ config.window_padding = {
   right = '0.5cell',
   bottom = 0,
 }
+
+config.initial_cols = 140
+config.initial_rows = 35
 
 return config
