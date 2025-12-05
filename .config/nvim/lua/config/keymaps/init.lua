@@ -34,6 +34,8 @@ function M.vanilla()
 	map("c", "<C-j>",           "<down>",                 { desc = "Move down on command history." })
 	map("v", "<",               "<gv",                    { desc = "Stay in visual mode after remove indent command." })
 	map("v", ">",               ">gv",                    { desc = "Stay in visual mode after add indent command." })
+	map("v", "//",              "y:<C-u>/<C-r>\"<cr>N",   { desc = "Search for the visually selected text." })
+	map("v", "/s",              "y:<C-u>%s/<C-r>\"/",     { desc = "Open command mode with the selected text in a search command." })
 
 	-- Alt+j and Alt+k for moving lines around
 	map("i", "<M-k>", "<esc><cmd>m .-2<cr>==gi",                               { desc = "Move current line up in insert mode." })
@@ -159,6 +161,7 @@ function M.dap()
 	map("n", "<leader>dO", dap.step_out,          { desc = "Debug: Step Out" })
 	map("n", "<leader>dC", dap.run_to_cursor,     { desc = "Debug: Run to Cursor" })
 	map("n", "<leader>d?", eval_under_cursor,     { desc = "Debug: Inspect ?" })
+	map("n", "<leader>du", dapui.open,            { desc = "Debug: open UI" })
 	map("n", "<leader>dc", dapui.close,           { desc = "Debug: close UI" })
 
 	-- map("n", "<leader>dB", function() dap.set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, { desc = "Breakpoint Condition" })

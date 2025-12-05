@@ -196,22 +196,12 @@ colors() {
   echo
 }
 
-# Not mine either. Prints a 256 color pallete
 colors_256() {
-  # 0-7: Standard colors
-  # 8-15: High-intensity colors
-  # 16-231: 6x6x6 color cube
-  # 232-255: Grayscale ramp
+  256colors2.pl
+}
 
-  echo "FG: \\e[1m \\e[38;5;\${c}m \\e[0m"
-  echo "BG: \\e[1m \\e[48;5;\${c}m \\e[0m"
-
-  for c in {0..255}; do
-    ((c % 16)) || echo -e "\e[0m"
-    printf "\e[1m\e[48;5;${c}m %03d " "$c"
-  done
-
-  echo -e "\e[0m"
+colors_24bit() {
+  truecolor-test.sh
 }
 
 # Gets the current java-alternative and sets its path to JAVA_HOME.
