@@ -85,7 +85,6 @@ return {
 				"lua_ls",
 				"ts_ls",
 				"bashls",
-				"pyright",
 			},
 			automatic_enable = {
 				exclude = { "jdtls" },

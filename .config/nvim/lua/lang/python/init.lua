@@ -2,26 +2,17 @@ local utils = require("lang.utils")
 
 local M = {}
 
-function M.setup(bufnr)
-	vim.bo[bufnr].tabstop = 4
+--- Downloads any necessary tools to work with Python, if they haven't been
+--- downloaded yet, and configures them. Should run at most once per session.
+function M.setup_tools()
 
-	-- Treesitter parser
+	--- Treesitter parser ------------------------------------------------------
 	utils.ts_install("python")
 
-	-- LSP
-	local lsp_name = "pyright"
 
-	utils.mason_install(lsp_name)
-
-	-- local lspconfig = require("lspconfig")
-	-- lspconfig[lsp_name].setup({
-	-- 	on_attach = function(client, bufnr)
-	-- 		local opts = { buffer = bufnr }
-	-- 		vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-	-- 		vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-	-- 	end,
-	-- })
-	vim.lsp.config(lsp_name, {
+	--- LSP --------------------------------------------------------------------
+	utils.mason_install("pyright")
+	vim.lsp.config("pyright", {
 		settings = {
 			pyright = {
 				disableLanguageServices = false,
@@ -45,49 +36,61 @@ function M.setup(bufnr)
 		},
 		single_file_support = true,
 	})
-	vim.lsp.enable(lsp_name)
+	vim.lsp.enable("pyright")
 
-	-- DAP
-	do
-		local dap_name = "debugpy"
 
-		utils.mason_install(dap_name)
+	--- DAP --------------------------------------------------------------------
+	utils.mason_install("debugpy")
+	require("dap-python").setup("debugpy-adapter")
 
-		local dap = require("dap")
-		dap.adapters.python = {
-			type = "executable",
-			command = "mason.get_package(lsp_name):get_install_path() .. '/venv/bin/python",
-			args = { "-m", "debugpy.adapter" },
-		}
-		dap.configurations.python = {
-			type = "python",
-			request = "launch",
-			name = "Run file",
-			program = "${file}",
-		}
-	end
 
-	-- Formatter and linter
-	utils.mason_install_then({ "black", "flake8" }, function()
-		print("All packages installed. Fired callback. Registering null-ls sources.")
-		local null_ls = require("null-ls")
+	--- Formatter and linter ---------------------------------------------------
+	local null_ls = require("null-ls")
+	utils.mason_install("black", function()
 		null_ls.register({
 			null_ls.builtins.formatting.black.with({
 				filetypes = { "python" },
-			}),
+			})
+		})
+	end)
+	utils.mason_install("flake8", function()
+		null_ls.register({
 			require("none-ls.diagnostics.flake8").with({
 				filetypes = { "python" },
 				prefer_local = ".venv/bin",
-			}),
+			})
 		})
 	end)
+end
 
-	-- Which Key
+--- Config settings specific for Python, such as vim.opts and keymaps.
+--- @param bufnr number The ID of the buffer to apply these settings to.
+function M.setup_buffer(bufnr)
+
+	--- Lang-specific options --------------------------------------------------
+	vim.bo[bufnr].tabstop = 4
+
+
+	--- Which Key --------------------------------------------------------------
 	utils.try_with("which-key", function(whichkey)
 		whichkey.add({
-			{ "<leader>d", buffer = bufnr, group = "debug" },
-			{ "<leader>db", "<cmd>lua require('dap').toggle_breakpoint()<CR>", buffer = bufnr, desc = "Toggle breakpoint" },
-			{ "<leader>dc", "<cmd>lua require('dap').continue()<CR>", buffer = bufnr, desc = "Continue" },
+			{
+				buffer = bufnr,
+				{
+					"<leader>d",
+					group = "debug",
+				},
+				{
+					"<leader>db",
+					"<cmd>lua require('dap').toggle_breakpoint()<CR>",
+					desc = "Toggle breakpoint",
+				},
+				{
+					"<leader>dc",
+					"<cmd>lua require('dap').continue()<CR>",
+					desc = "Continue",
+				},
+			},
 		})
 	end)
 end

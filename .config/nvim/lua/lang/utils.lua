@@ -1,5 +1,14 @@
 local M = {}
 
+local _mason_refresh = {
+	done = false,
+	in_progress = false,
+	callback_queue = {},
+}
+
+--- Use a module if it exists. Fail silently if it doesn't.
+--- @param module_name string The module to require
+--- @param callback function A callback that receives and uses the module.
 function M.try_with(module_name, callback)
 	local ok, module = pcall(require, module_name)
 	if ok then
@@ -7,133 +16,72 @@ function M.try_with(module_name, callback)
 	end
 end
 
-function M.ts_install(language)
+--- Installs a Tree-sitter parser.
+--- @param parser string The parser to install
+function M.ts_install(parser)
 	local parsers = require("nvim-treesitter.parsers")
 	local configs = parsers.get_parser_configs()
 
-	if configs[language] and not parsers.has_parser(language) then
-		vim.schedule_wrap(function()
-			vim.cmd("TSInstall " .. language)
-			vim.notify("Installing treesitter parser for '" .. language .. "'...", vim.log.levels.INFO)
-		end)()
+	if configs[parser] and not parsers.has_parser(parser) then
+		vim.schedule(function()
+			vim.cmd("TSInstall " .. parser)
+			print("Installing treesitter parser '" .. parser .. "'...")
+		end)
 	end
 end
 
---- Installs null-ls binary sources with mason, if they are missing.
---- @param sources string|string[] One or more sources to install.
-function M.null_install(sources)
-	if type(sources) == "string" then
-		sources = { sources }
-	end
 
-	local currently_installed = {}
-	for _, source in ipairs(require("mason-null-ls").get_installed_sources()) do
-		currently_installed[source] = true
-	end
-
-	local missing = {}
-
-	for _, source in ipairs(sources) do
-		if not currently_installed[source] then
-			table.insert(missing, source)
-		end
-	end
-
-	if #missing > 0 then
-		local missing_str = table.concat(missing, " ")
-		vim.notify("Installing missing null-ls sources: " .. missing_str, vim.log.levels.INFO)
-		vim.cmd("NullLsInstall " .. missing_str)
-	end
-end
-
-local function _mason_install_then(packages, callback)
-	if type(packages) == "string" then
-		packages = { packages }
-	end
-
-	local to_install = {}
-	local installed = {}
-	local non_existent = {}
-	local failed = {}
+--- Installs a Mason package and calls the `callback` when it succeeds or fails.
+--- @param mason_pkg string The name of the package to install.
+--- @param callback? function An optional callback function with param `success: boolean`
+function M.mason_install(mason_pkg, callback)
+	callback = callback or function() end
 
 	local registry = require("mason-registry")
 
-	-- Check each candidate's status so we have a count and can notify of
-	-- any failures later
-	for _, package in ipairs(packages) do
-		if not registry.has_package(package) then
-			table.insert(non_existent, package)
-		elseif not registry.is_installed(package) then
-			table.insert(to_install, package)
+	-- Check whether the package exists in the registry and whether it's been
+	-- isntalled or is being installed. Calls :install and registers the callback
+	local install = function(_mason_pkg, _callback)
+		if registry.has_package(_mason_pkg) then
+			local pkg = registry.get_package(_mason_pkg)
+			if not pkg:is_installed() and not pkg:is_installing() then
+				pkg:install({}, function(success, results)
+					if success then
+						print("Installed '" .. results.name .. "' successfully.")
+					else
+						print("Failed to install '" .. results.name .. "'.")
+					end
+					_callback(success)
+				end)
+			end
+		else
+			vim.notify(
+				debug.traceback("Package '" .. _mason_pkg .. "' does not exist."),
+				vim.log.levels.ERROR)
 		end
 	end
 
-	local pending = #to_install
-
-	-- Update the count, check whether they were all processed and
-	-- fire notifications and callback if true
-	local trigger_callback = function()
-		if pending == 0 then
-			if #installed > 0 then
-				print(
-					"Mason packages installed: " .. table.concat(installed, ", "),
-					vim.log.levels.INFO)
-			end
-			if #non_existent > 0 then
-				print(
-					"These packages don't exist in Mason's registry: " .. table.concat(non_existent, ", "),
-					vim.log.levels.ERROR)
-			end
-			if #failed  > 0 then
-				print(
-					"These packages failed to install: " .. table.concat(failed, ", "),
-					vim.log.levels.ERROR)
-			end
-			callback()
-		end
-	end
-
-	-- Install packages and register processing events
-	print("Installing Mason packages: " .. table.concat(to_install, ", "))
-	for _, package in ipairs(to_install) do
-		local pkg = registry.get_package(package)
-		pkg:on("install:success", function()
-			print("Called 'install:success' for " .. pkg:get_name())
+	-- Check whether the registry has been refreshed before installing tools.
+	-- If it hasn't, refresh it and queue any callbacks until it's done. Runs
+	-- all callbacks after refreshing.
+	if _mason_refresh.done then
+		install(mason_pkg, callback)
+	elseif _mason_refresh.in_progress then
+		table.insert(_mason_refresh.callback_queue, function()
+			install(mason_pkg, callback)
 		end)
-		pkg:on("install:failure", function()
-			print("Called 'install:failure' for " .. pkg:get_name())
-		end)
-		pkg:install({}, function(success, results)
-			pending = pending - 1
-			if success then
-				print("Installed '" .. results.name .. "' successfully.")
-				table.insert(installed, results.name)
-			else
-				print("Failed to install '" .. results.name .. "'.")
-				table.insert(failed, results.name)
+	else
+		print("Refreshing Mason registry...")
+		_mason_refresh.in_progress = true
+		registry.refresh(function()
+			for _, _callback in ipairs(_mason_refresh.callback_queue) do
+				_callback()
 			end
-			trigger_callback()
+			_mason_refresh.in_progress = false
+			_mason_refresh.done = true
+			install(mason_pkg, callback)
 		end)
 	end
-
-	-- In case no work's been done this will trigger immediately
-	trigger_callback()
-end
-
---- Installs Mason packages and triggers a callback after processing them all.
---- @param packages string|string[] One or more packages to install.
---- @param callback function A callback function to execute after all packages are installed
-function M.mason_install_then(packages, callback)
-	M.mason_install_then = _mason_install_then
-
-	require("mason-registry").refresh(function()
-		_mason_install_then(packages, callback)
-	end)
-end
-
---- An alias to M.mason_install_then with no callback
-function M.mason_install(packages)
-	M.mason_install_then(packages, function() end)
 end
 
 return M

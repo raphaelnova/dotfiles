@@ -15,6 +15,11 @@ end
 -- :help 'runtimepath'
 vim.opt.rtp:prepend(lazypath)
 
+-- Data, flags or toggles I need to keep track of during session such
+-- as LSP setup info or "has it run yet" flags. Use module names as
+-- namespaces to avoid conflicts.
+vim.g.session_state = {}
+
 require("config.filetypes")
 require("config.options")
 require("config.keymaps")

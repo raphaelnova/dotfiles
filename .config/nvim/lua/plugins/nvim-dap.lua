@@ -9,6 +9,7 @@ return {
 			"nvim-neotest/nvim-nio",             -- async IO (what for?)
 			"theHamsta/nvim-dap-virtual-text",   -- shows var values while debugging
 			"jbyuki/one-small-step-for-vimkind", -- debug nvim plugins
+			"mfussenegger/nvim-dap-python",
 		},
 		config = function()
 			local dap = require("dap")
@@ -90,7 +91,6 @@ return {
 				ensure_installed = {
 					"javadbg",  -- "java-debug-adapter"
 					"javatest", -- "java-test"
-					"python",   -- "debugpy"
 					"bash",     -- "bash-debug-adapter"
 				},
 			})
