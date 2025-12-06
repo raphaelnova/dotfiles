@@ -11,7 +11,6 @@ return {
 				sources = {
 					-- require("none-ls.diagnostics.eslint_d"),        -- JS
 					-- null_ls.builtins.diagnostics.ansiblelint,       -- Ansible
-					-- null_ls.builtins.formatting.stylua,             -- Lua
 					-- null_ls.builtins.formatting.shfmt.with({        -- Shell/Bash
 					-- 	filetypes = { "sh", "bash", },
 					-- 	-- Google Style, as seen on patrickvane/shfmt
@@ -40,7 +39,6 @@ return {
 				-- 	"google_java_format",
 				-- 	"prettier",
 				-- 	"shfmt",
-				-- 	"stylua",
 				-- 	"xmllint",
 				-- },
 			})

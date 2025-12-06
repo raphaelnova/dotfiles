@@ -15,23 +15,6 @@ return {
 			local dap = require("dap")
 			local dapui = require("dapui")
 
-			dap.adapters.nlua = function(callback, config)
-				callback({ type = "server", host = config.host, port = config.port })
-			end
-			dap.configurations.lua = {
-				{
-					type = "nlua",
-					request = "attach",
-					name = "Attach to running Neovim instance",
-					host = function()
-						return "127.0.0.1"
-					end,
-					port = function()
-						return tonumber(vim.fn.input("Port: ", "54231"))
-					end,
-				},
-			}
-
 			dapui.setup({
 				expand_lines = true,
 				controls = { enabled = false },
