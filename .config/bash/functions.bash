@@ -61,20 +61,20 @@ __javaversion() {
 
     curr_version="$(java -version 2>&1)"
 
-    case "$curr_version" in
+    case "${curr_version}" in
     # Eclipse Temurin
     *Temurin-*)
-      [[ "$curr_version" =~ Temurin-([0-9]+) ]] &&
+      [[ "${curr_version}" =~ Temurin-([0-9]+) ]] &&
         output_version="${BASH_REMATCH[1]}-tem"
       ;;
     # Azul JDK
     *Zulu*)
-      [[ "$curr_version" =~ Zulu([0-9]+) ]] &&
+      [[ "${curr_version}" =~ Zulu([0-9]+) ]] &&
         output_version="${BASH_REMATCH[1]}-zulu"
       ;;
     # Ubuntu OpenJDK
     *Ubuntu*)
-      [[ "$curr_version" =~ \(build\ ([0-9]+) ]] &&
+      [[ "${curr_version}" =~ \(build\ ([0-9]+) ]] &&
         output_version="${BASH_REMATCH[1]}-ubuntu"
       ;;
     esac
@@ -82,7 +82,7 @@ __javaversion() {
     # https://www.nerdfonts.com/cheat-sheet
     # nf-fae-coffe_beans e26a
     # nf-cod-coffee ec15
-    printf " \\uec15 %s" "$output_version"
+    printf " \\ue26a %s" "${output_version}"
   fi
 }
 

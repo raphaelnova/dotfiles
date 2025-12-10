@@ -1,5 +1,6 @@
 --- @type Wezterm
 local wezterm = require("wezterm")
+
 local colors = require("colors")
 
 --- @type table|Config
@@ -19,7 +20,7 @@ config.color_scheme = "custom-catpuccin-mocha"
 config.font_size = 10.0
 config.font = wezterm.font_with_fallback({
   {
-    family = "Fira Code",
+    family = "FiraCode Nerd Font",
     weight = "Regular",
     harfbuzz_features = {
       -- https://wezterm.org/config/font-shaping.html
