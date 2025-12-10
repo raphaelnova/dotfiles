@@ -3,7 +3,7 @@ local ns = vim.api.nvim_create_namespace("FoldDecor")
 -- Highlight fold indicators
 vim.api.nvim_set_hl(0, "FoldExtMarks", { fg = "#555555", bg = "NONE" })
 
--- vim.fn.sign_define("FoldSign", { text = "+", texthl="FoldExtMarks" })
+vim.fn.sign_define("FoldSign", { text = "+", texthl="FoldExtMarks" })
 
 --- Get the total length of a buffer line, taking into account
 --- extmarks and chars that span multiple columns like <tab>
@@ -19,7 +19,7 @@ local get_total_width = function(buf, lnum)
 
 	for _, mark in ipairs(extmarks) do
 		local details = mark[4] -- [extmark_id, row, col, details]
-		if details.virt_text and details.virt_text_pos == "inline" then
+		if details ~= nil and details.virt_text and details.virt_text_pos == "inline" then
 			local txt = table.concat(vim.tbl_map(function(e)
 				return e[1]
 			end, details.virt_text))
@@ -50,14 +50,17 @@ local draw_fold_indicators = function(buf, topline, bottomline)
 			local indent_cols = vim.fn.strdisplaywidth(indent)
 
 			-- Prefix placed over indentation
-			vim.api.nvim_buf_set_extmark(buf, ns, lnum - 1, 0, {
-				virt_text = { { "[+] ", "FoldExtMarks" } },
-				virt_text_win_col = math.max(indent_cols - 4, 0),
-				hl_mode = "combine",
-				priority = 200,
-				ephemeral = true,
+			-- vim.api.nvim_buf_set_extmark(buf, ns, lnum - 1, 0, {
+			-- 	virt_text = { { "[+] ", "FoldExtMarks" } },
+			-- 	virt_text_win_col = math.max(indent_cols - 4, 0),
+			-- 	hl_mode = "combine",
+			-- 	priority = 200,
+			-- 	ephemeral = true,
+			-- })
+			vim.fn.sign_place(lnum, "foldsigns", "FoldSign", vim.fn.bufname("%"), {
+				lnum = lnum,
+				priority = 10,
 			})
-			-- vim.fn.sign_place(0, "foldsigns", "FoldSign", 0, { lnum = lnum, priority = 10 })
 
 			-- Suffix at end-of-line
 			vim.api.nvim_buf_set_extmark(buf, ns, lnum - 1, 0, {
