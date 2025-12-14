@@ -3,7 +3,10 @@ local ns = vim.api.nvim_create_namespace("FoldDecor")
 -- Highlight fold indicators
 vim.api.nvim_set_hl(0, "FoldExtMarks", { fg = "#555555", bg = "NONE" })
 
-vim.fn.sign_define("FoldSign", { text = "+", texthl="FoldExtMarks" })
+vim.fn.sign_define("FoldSign", {
+	text = "›", -- \u203a - Guil single right
+	texthl="FoldExtMarks"
+})
 
 --- Get the total length of a buffer line, taking into account
 --- extmarks and chars that span multiple columns like <tab>

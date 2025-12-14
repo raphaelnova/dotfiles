@@ -4,17 +4,6 @@ return {
 		"nvim-tree/nvim-web-devicons",
 	},
 	config = function()
-		require("nvim-web-devicons").setup({
-			override = {
-				java = {
-					icon = " ", -- \ue26a coffee beans + extra space because it's not monospaced
-					-- color = "#9C6211",
-					color = "#ED8A00",
-					cterm_color = "4",
-					name = "Java",
-				},
-			},
-		})
 		require("lualine").setup({
 			options = {
 				icons_enabled = true,

@@ -47,6 +47,8 @@ config.font_rules = {}
 config.cell_width = 1.0
 config.line_height = 1.05
 
+config.warn_about_missing_glyphs = false
+
 --
 -- Tab behavior (disable fancy tab bar, hides default tab bar unless needed)
 --

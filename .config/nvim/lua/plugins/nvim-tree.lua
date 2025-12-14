@@ -30,6 +30,13 @@ return {
 				},
 			},
 		})
+
+		-- vim.api.nvim_set_hl(0, "NvimTreeFolderName",	      { link = "NvimTreeNormal" })
+		-- vim.api.nvim_set_hl(0, "NvimTreeEmptyFolderName",  { link = "NvimTreeFolderName" })
+		-- vim.api.nvim_set_hl(0, "NvimTreeOpenedFolderName", { link = "NvimTreeFolderName" })
+		-- vim.api.nvim_set_hl(0, "NvimTreeOpenedFolderIcon", { fg = "#666666" })
+		-- vim.api.nvim_set_hl(0, "NvimTreeClosedFolderIcon", { fg = "#666666" })
+
 		require("config.keymaps").nvim_tree()
 	end,
 }

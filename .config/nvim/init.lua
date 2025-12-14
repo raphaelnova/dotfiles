@@ -38,6 +38,8 @@ vim.diagnostic.config({
 	},
 })
 
+vim.cmd("packadd nvim.undotree")
+
 -- Always last. "plugins" mean folder ./lua/plugins
 require("lazy").setup("plugins", {
 	change_detection = {
