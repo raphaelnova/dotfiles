@@ -63,14 +63,8 @@ export XMLLINT_INDENT="    " # Four spaces
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 eval "$(direnv hook bash)"
 
-[[ -s ~/gradle-completion.bash ]] && source ~/gradle-completion.bash
-
-path_dirs=(
-  "$HOME/.local/bin"
-  "$HOME/bin"
-  "/opt/gradle/gradle-8.14.1/bin"
-  "/opt/apache-maven-3.9.10/bin"
-)
+# PATHs reside in an external file now (easier to manipulate with Ansible)
+mapfile -t path_dirs < "${HOME}/.config/bash/path"
 PATH="${PATH}$(printf ":%s" "${path_dirs[@]}")"
 export PATH
 
@@ -112,3 +106,5 @@ SDKMAN_COMPLETION="$SDKMAN_DIR/contrib/completion/bash/sdk"
   source "$SDKMAN_DIR/bin/sdkman-init.sh"
 
 [[ -s "$SDKMAN_COMPLETION" ]] && source "$SDKMAN_COMPLETION"
+
+[[ -s ~/gradle-completion.bash ]] && source ~/gradle-completion.bash
