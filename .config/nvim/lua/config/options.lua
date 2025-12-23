@@ -49,6 +49,7 @@ vim.opt.listchars = {
 	nbsp     = "␣",  -- \u2423 Open box
 	eol      = "↵",  -- \u21b5 Downwards arrow with corner leftwards
 }
+vim.opt.winborder = 'single'
 
 vim.opt.clipboard = "unnamedplus"
 vim.opt.mouse = "a"

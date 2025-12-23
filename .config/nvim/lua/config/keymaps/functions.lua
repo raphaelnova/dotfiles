@@ -58,7 +58,9 @@ function M.get_fn_toggle_diagnostics_virt()
 		vim.diagnostic.config({
 			-- disabled   = vtext == 0
 			virtual_text  = vtext == 1,
-			virtual_lines = vtext == 2,
+			virtual_lines = vtext == 2 and {
+				current_line = true
+			}
 		})
 	end
 end

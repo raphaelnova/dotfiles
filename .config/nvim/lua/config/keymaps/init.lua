@@ -36,6 +36,7 @@ function M.vanilla()
 	map("v", ">",               ">gv",                    { desc = "Stay in visual mode after add indent command." })
 	map("v", "//",              "y:<C-u>/<C-r>\"<cr>N",   { desc = "Search for the visually selected text." })
 	map("v", "/s",              "y:<C-u>%s/<C-r>\"/",     { desc = "Open command mode with the selected text in a search command." })
+	map("v", "<leader>p",       "\"_dP",                  { desc = "Replace selection with register \" without copying replaced text." })
 
 	-- Alt+j and Alt+k for moving lines around
 	map("i", "<M-k>", "<esc><cmd>m .-2<cr>==gi",                               { desc = "Move current line up in insert mode." })
@@ -57,7 +58,7 @@ function M.vanilla()
 	for _, pair in ipairs(pairs) do
 		local desc = "Surround selection with " .. pair.left .. " " .. pair.right
 		local lhs  = "<leader>" .. pair.left
-		local rhs  = "<cmd><C-u>normal!"
+		local rhs  = ":normal!"
 		rhs = rhs .. "`>a" .. pair.right .. "<esc>"
 		rhs = rhs .. "`<i" .. pair.left  .. "<esc>"
 		map("v", lhs, rhs, { desc = desc })
