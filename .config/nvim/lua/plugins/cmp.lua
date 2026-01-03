@@ -5,6 +5,12 @@ return {
 			"saadparwaiz1/cmp_luasnip",
 			"rafamadriz/friendly-snippets",
 		},
+		config = function()
+			require("luasnip.loaders.from_vscode").lazy_load({})
+			require("luasnip.loaders.from_vscode").lazy_load({
+				paths = { vim.fn.stdpath("config") .. "/snippets" },
+			})
+		end,
 	},
 	{
 		"hrsh7th/cmp-nvim-lsp",
@@ -17,12 +23,8 @@ return {
 			"hrsh7th/cmp-path",
 		},
 		config = function()
-			require("luasnip").setup({})
-			require("luasnip.loaders.from_vscode").lazy_load({
-				paths = vim.fn.stdpath("config") .. "/snippets",
-			})
-
 			local cmp = require("cmp")
+			local luasnip = require("luasnip")
 			cmp.setup({
 				completion = {
 					-- menu: display options in a row
@@ -34,7 +36,7 @@ return {
 				},
 				snippet = {
 					expand = function(args)
-						require("luasnip").lsp_expand(args.body)
+						luasnip.lsp_expand(args.body)
 					end,
 				},
 				mapping = cmp.mapping.preset.insert({
@@ -43,7 +45,22 @@ return {
 					["<C-j>"] = cmp.mapping.select_next_item(),
 					["<C-b>"] = cmp.mapping.scroll_docs(-4),
 					["<C-f>"] = cmp.mapping.scroll_docs(4),
-					["<TAB>"] = cmp.mapping.confirm({ select = true }),
+					["<Tab>"] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							cmp.confirm({ select = true })
+						elseif luasnip.expand_or_jumpable() then
+							luasnip.jump(1)
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
+					["<S-Tab>"] = cmp.mapping(function(fallback)
+						if luasnip.jumpable(-1) then
+							luasnip.jump(-1)
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
 					["<C-e>"] = cmp.mapping.abort(),
 				}),
 				sources = cmp.config.sources({
