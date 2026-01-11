@@ -1,7 +1,11 @@
 --- @type Wezterm
 local wezterm = require("wezterm")
-
 local colors = require("colors")
+
+-- wezterm.on('gui-startup', function(cmd)
+--   local _, _, window = wezterm.mux.spawn_window(cmd or {})
+--   window:gui_window():maximize()
+-- end)
 
 --- @type table|Config
 local config = {}
@@ -13,6 +17,12 @@ end
 -- Open bash as a non-login shell (auto-tmux for me)
 --
 config.default_prog = { "/usr/bin/bash" }
+
+-- Restart tmux with `tmux kill-server` to propagate any changes here
+config.set_environment_variables = {
+  -- Disable shell integration (which overrides HISTCONTROL)
+  WEZTERM_SHELL_SKIP_ALL = "1",
+}
 
 config.color_schemes = { ["custom-catpuccin-mocha"] = colors.custom_mocha }
 config.color_scheme = "custom-catpuccin-mocha"
