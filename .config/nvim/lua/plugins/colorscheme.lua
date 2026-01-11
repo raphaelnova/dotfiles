@@ -48,8 +48,16 @@ return {
 							CursorColumn = { bg = cp.surfaceN },
 							CursorLine = { bg = cp.surfaceN },
 
+							-- Slightly darker and no bold face
+							Visual = { bg = cp.surface0, style = {} },
+
 							-- Remove background from folds
 							Folded = { bg = "NONE" },
+
+							-- Floating window contents (mostly bg because content is colored by treesitter)
+							-- NormalFloat = { bg = "NONE" }
+							-- Floating window borders drawn with vim.opt.winborder
+							-- FloatBorder = { fg = cp.surface0 },
 
 							-- QuickFix current item
 							QuickFixLine = { bg = "#111111" },
@@ -69,10 +77,8 @@ return {
 							-- Fade out inlay hints a little more
 							LspInlayHint = { fg = cp.surface2, bg = "NONE" },
 
-							--[[
 							-- Highlight groups defined by Tree-sitter
 							-- https://github.com/catppuccin/nvim/blob/main/lua/catppuccin/groups/treesitter.lua
-							--]]
 							["@keyword.conditional.lua"] = { fg = cp.mauve },
 
 							-- Highlight groups defined by the LS (treesitter preferred)
