@@ -76,8 +76,8 @@ function M.vanilla()
 	-- TODO: toggle comments visibility with treesitter query (possible?)
 
 	-- Window navigation
-	map("n", "<leader>wv", "<cmd>vnew",  { desc = "Window vertical split." })
-	map("n", "<leader>wh", "<cmd>new",   { desc = "Window horizontal split." })
+	map("n", "<leader>wv", "<cmd>vnew<CR>",  { desc = "Window vertical split." })
+	map("n", "<leader>wh", "<cmd>new<CR>",   { desc = "Window horizontal split." })
 	map("n", "<C-h>",      "<C-w><C-h>", { desc = "Move focus to the left window." })
 	map("n", "<C-j>",      "<C-w><C-j>", { desc = "Move focus to the bottom window." })
 	map("n", "<C-k>",      "<C-w><C-k>", { desc = "Move focus to the top window." })

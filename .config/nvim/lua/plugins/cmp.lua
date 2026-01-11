@@ -13,12 +13,10 @@ return {
 		end,
 	},
 	{
-		"hrsh7th/cmp-nvim-lsp",
-	},
-	{
 		"hrsh7th/nvim-cmp",
 		event = "InsertEnter",
 		dependencies = {
+			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-path",
 		},
@@ -43,6 +41,20 @@ return {
 					["<C-Space>"] = cmp.mapping.complete({ reason = cmp.ContextReason.Auto }),
 					["<C-k>"] = cmp.mapping.select_prev_item(),
 					["<C-j>"] = cmp.mapping.select_next_item(),
+					["<C-p>"] = cmp.mapping(function(fallback)
+						if luasnip.choice_active() then
+							luasnip.change_choice(-1)
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
+					["<C-n>"] = cmp.mapping(function(fallback)
+						if luasnip.choice_active() then
+							luasnip.change_choice(1)
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
 					["<C-b>"] = cmp.mapping.scroll_docs(-4),
 					["<C-f>"] = cmp.mapping.scroll_docs(4),
 					["<Tab>"] = cmp.mapping(function(fallback)
