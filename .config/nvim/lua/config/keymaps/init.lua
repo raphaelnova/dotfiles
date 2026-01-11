@@ -78,10 +78,10 @@ function M.vanilla()
 	-- Window navigation
 	map("n", "<leader>wv", "<cmd>vnew<CR>",  { desc = "Window vertical split." })
 	map("n", "<leader>wh", "<cmd>new<CR>",   { desc = "Window horizontal split." })
-	map("n", "<C-h>",      "<C-w><C-h>", { desc = "Move focus to the left window." })
-	map("n", "<C-j>",      "<C-w><C-j>", { desc = "Move focus to the bottom window." })
-	map("n", "<C-k>",      "<C-w><C-k>", { desc = "Move focus to the top window." })
-	map("n", "<C-l>",      "<C-w><C-l>", { desc = "Move focus to the right window." })
+	map("n", "<C-h>",      "<C-w><C-h>",     { desc = "Move focus to the left window." })
+	map("n", "<C-j>",      "<C-w><C-j>",     { desc = "Move focus to the bottom window." })
+	map("n", "<C-k>",      "<C-w><C-k>",     { desc = "Move focus to the top window." })
+	map("n", "<C-l>",      "<C-w><C-l>",     { desc = "Move focus to the right window." })
 
 	-- Folds
 	map("n", "zl", function() vim.opt.foldlevel = vim.v.count end, { desc = "Set foldlevel to N." })

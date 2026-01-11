@@ -384,6 +384,20 @@ to_gif() {
     -loop 0 "${gif}"
 }
 
+# Extracts a thumbnail from a specific timestamp
+thumb() {
+  local input="$1"
+  local timestamp="$2"
+  local output
+  output="$(thumbname "${input}")"
+  /usr/bin/ffmpegthumbnailer \
+    -s 256 -f \
+    -i "${input}" \
+    -o "${output}" \
+    -t "${timestamp}"
+  mv "${output}" ~/.cache/thumbnails/large/
+}
+
 # Gets a video and an SRT file, fixes the text encoding and EOL
 # and outputs a new video with the subtitles in it.
 subtitle() {

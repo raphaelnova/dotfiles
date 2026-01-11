@@ -3,3 +3,8 @@
 	name = Raphael Nova
 [alias]
 	list = ls-tree --full-tree -r --name-only
+[core]
+	excludesFile = /home/raphael/.config/gitignore_global
+[color "diff"]
+	meta = blue bold
+	frag = yellow
