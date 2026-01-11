@@ -5,6 +5,7 @@ vim.opt.fixendofline = false
 vim.opt.swapfile = false
 vim.opt.modeline = true
 vim.opt.showmode = false
+vim.opt.cmdheight = 1
 
 -- Disable netrw to use nvim-tree
 vim.g.loaded_netrw = 1
@@ -18,6 +19,7 @@ vim.opt.foldmethod = "expr" -- fold by syntax tree with treesitter (below)
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.fillchars = { fold = " " }
 
+-- Indent options
 -- Check ftplugins for possible overwrites
 vim.opt.tabstop = 2      -- how many columns a \t occupies
 vim.opt.shiftwidth = 0   -- columns for each indent level (0 = same as tabstop)
@@ -68,4 +70,15 @@ vim.opt.smartcase = true
 -- vim.opt.grepformat = "%f:%l:%c:%m"
 
 vim.opt.showmatch = true -- blink matching pair when closing
+
+---Creates separate shadafiles for each cwd.
+---Ensures project-scoped jumplist, marks, etc.
+---@return string?
+local shadafile = function()
+	return vim.fs.joinpath(
+		vim.fn.stdpath("state"),
+		"shada",
+		vim.fn.getcwd():gsub("/", "_") .. ".shada")
+end
+vim.o.shadafile = shadafile()
 

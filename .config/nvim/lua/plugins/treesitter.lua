@@ -1,4 +1,6 @@
 return {
+	--- @module 'lazy'
+	--- @type LazySpec
 	{
 		"nvim-treesitter/nvim-treesitter",
 		branch = "main",
@@ -62,6 +64,8 @@ return {
 			})
 		end,
 	},
+	--- @module 'lazy'
+	--- @type LazySpec
 	{
 		"nvim-treesitter/nvim-treesitter-textobjects",
 		event = "VeryLazy",

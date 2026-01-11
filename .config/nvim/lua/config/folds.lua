@@ -48,18 +48,6 @@ local draw_fold_indicators = function(buf, topline, bottomline)
 
 	while lnum <= bottomline do
 		if vim.fn.foldclosed(lnum) == lnum then
-			local line = vim.api.nvim_buf_get_lines(buf, lnum - 1, lnum, false)[1] or ""
-			local indent = line:match("^%s*") or ""
-			local indent_cols = vim.fn.strdisplaywidth(indent)
-
-			-- Prefix placed over indentation
-			-- vim.api.nvim_buf_set_extmark(buf, ns, lnum - 1, 0, {
-			-- 	virt_text = { { "[+] ", "FoldExtMarks" } },
-			-- 	virt_text_win_col = math.max(indent_cols - 4, 0),
-			-- 	hl_mode = "combine",
-			-- 	priority = 200,
-			-- 	ephemeral = true,
-			-- })
 			vim.fn.sign_place(lnum, "foldsigns", "FoldSign", vim.fn.bufname("%"), {
 				lnum = lnum,
 				priority = 10,
