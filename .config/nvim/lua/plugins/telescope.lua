@@ -1,7 +1,8 @@
 return {
 	{
 		"nvim-telescope/telescope.nvim",
-		tag = "0.1.6",
+		-- tag = "*",
+		branch = "master",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			-- Replaces vim.ui.select with a Telescope UI. To see it in action:
