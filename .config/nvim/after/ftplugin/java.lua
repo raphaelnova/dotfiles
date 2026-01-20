@@ -1,1 +1,1 @@
-require("lang.java")
+require("lang.java").setup_buffer(vim.api.nvim_get_current_buf())

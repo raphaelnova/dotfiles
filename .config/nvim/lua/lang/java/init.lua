@@ -1,38 +1,40 @@
-require("lang.java.jdtls").setup_or_attach()
+local utils = require("lang.utils")
 
-vim.opt.tabstop = 4
+local M = {}
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "java",
-  desc = "Installs Java treesitter parser if not installed already.",
-  callback = function()
-    local parser = "java"
-    local loaded, ts_install = pcall(require, "nvim-treesitter.install")
-    if loaded and not ts_install.is_installed(parser) then
-      ts_install.install(parser)
-    end
-  end,
-})
+--- Downloads any necessary tools to work with Java, if they haven't been
+--- downloaded yet, and configures them. Should run at most once per session.
+function M.setup_tools()
 
--- TODO: Add specific keymaps and which-key group
+	--- DAP & tests ------------------------------------------------------------
+	utils.mason_install("java-debug-adapter")
+	utils.mason_install("java-test")
 
--- Register prefixes for the different keymaps we have setup previously
--- which_key.register({
--- 	{ "<leader>/", group = "Comments"   }, { "<leader>/_", hidden = true },
--- 	{ "<leader>J", group = "[J]ava"     }, { "<leader>J_", hidden = true },
--- 	{ "<leader>c", group = "[C]ode"     }, { "<leader>c_", hidden = true },
--- 	{ "<leader>d", group = "[D]ebug"    }, { "<leader>d_", hidden = true },
--- 	{ "<leader>e", group = "[E]xplorer" }, { "<leader>e_", hidden = true },
--- 	{ "<leader>f", group = "[F]ind"     }, { "<leader>f_", hidden = true },
--- 	{ "<leader>g", group = "[G]it"      }, { "<leader>g_", hidden = true },
--- 	{ "<leader>w", group = "[W]indow"   }, { "<leader>w_", hidden = true },
--- })
 
--- TODO: Add Mason binaries
+	--- Formatter and linter ---------------------------------------------------
+	local null_ls = require("null-ls")
+	utils.mason_install("google-java-format", function()
+		null_ls.register({
+			null_ls.builtins.formatting.google_java_format,
+		})
+	end)
+	-- Local install, no Mason here
+	null_ls.register({
+		null_ls.builtins.formatting.xmllint,
+	})
+end
 
--- Formatters and linters
-local null_ls = require("null-ls")
-null_ls.register({
-	null_ls.builtins.formatting.google_java_format,
-	null_ls.builtins.formatting.xmllint,
-})
+--- Config settings specific for Java, such as vim.opts and keymaps.
+--- @param bufnr number The ID of the buffer to apply these settings to.
+function M.setup_buffer(bufnr)
+	utils.once("lang.java.setup_tools", M.setup_tools)
+
+	--- Lang-specific options --------------------------------------------------
+	vim.bo[bufnr].tabstop = 4
+
+
+	--- LSP --------------------------------------------------------------------
+	require("lang.java.jdtls").attach()
+end
+
+return M

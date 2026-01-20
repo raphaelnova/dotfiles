@@ -36,10 +36,8 @@ return {
 				-- 	"ansible-lint",
 				-- 	"black",
 				-- 	"eslint_d",
-				-- 	"google_java_format",
 				-- 	"prettier",
 				-- 	"shfmt",
-				-- 	"xmllint",
 				-- },
 			})
 		end,

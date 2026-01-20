@@ -16,7 +16,19 @@ function M.try_with(module_name, callback)
 	end
 end
 
---- Installs a Tree-sitter parser.
+
+--- Run only once. Useful for setup (sets global vars)
+--- @param key string The key to indicate that this action was executed
+--- @param fn function The action to execute
+function M.once(key, fn)
+	if not vim.g.session_state[key] then
+		vim.g.session_state[key] = true
+		fn()
+	end
+end
+
+
+--- Installs a Tree-sitter parser (on branch master)
 --- @param parser string The parser to install
 function M.ts_install(parser)
 	local parsers = require("nvim-treesitter.parsers")
@@ -71,7 +83,6 @@ function M.mason_install(mason_pkg, callback)
 			install(mason_pkg, callback)
 		end)
 	else
-		print("Refreshing Mason registry...")
 		_mason_refresh.in_progress = true
 		registry.refresh(function()
 			for _, _callback in ipairs(_mason_refresh.callback_queue) do

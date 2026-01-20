@@ -56,6 +56,12 @@ local function java_keymaps()
 
 	vim.keymap.set(
 		"n",
+		"<leader>Jn",
+		"<cmd>lua require('lang.java.type_element').new_type_element()<CR>",
+		{ desc = "[J]ava [N]ew type element." }
+	)
+	vim.keymap.set(
+		"n",
 		"<leader>Jo",
 		"<cmd>lua require('jdtls').organize_imports()<CR>",
 		{ desc = "[J]ava [O]rganize imports." }
@@ -100,8 +106,7 @@ local function java_keymaps()
 	vim.keymap.set("n", "<leader>Ju", "<cmd>JdtUpdateConfig<CR>", { desc = "[J]ava [U]update config." })
 end
 
-local function setup_or_attach()
-	local jdtls = require("jdtls")
+local function get_setup_config()
 	local launcher, os_config, lombok = get_launcher()
 	local bundles = get_bundles()
 	local workspace_dir = get_workspace()
@@ -118,7 +123,7 @@ local function setup_or_attach()
 		},
 	})
 
-	local extendedClientCapabilities = jdtls.extendedClientCapabilities
+	local extendedClientCapabilities = require("jdtls").extendedClientCapabilities
 	extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
 
 	local cmd = {
@@ -272,14 +277,15 @@ local function setup_or_attach()
 
 		require("jdtls.setup").add_commands()
 
-		vim.lsp.codelens.refresh()
-		vim.api.nvim_create_autocmd("BufWritePost", {
-			pattern = { "*.java" },
-			callback = function()
-				pcall(vim.lsp.codelens.refresh)
-				pcall(vim.diagnostic.setqflist)
-			end,
-		})
+		-- Enable and refresh codelens
+		-- vim.lsp.codelens.refresh()
+		-- vim.api.nvim_create_autocmd("BufWritePost", {
+		-- 	pattern = { "*.java" },
+		-- 	callback = function()
+		-- 		pcall(vim.lsp.codelens.refresh)
+		-- 		pcall(vim.diagnostic.setqflist)
+		-- 	end,
+		-- })
 
 		-- Filter "target/" folder from diagnostics
 		local orig_handler = vim.lsp.handlers["textDocument/publishDiagnostics"]
@@ -293,7 +299,7 @@ local function setup_or_attach()
 
 	end
 
-	jdtls.start_or_attach({
+	return {
 		name = "jdtls",
 		cmd = cmd,
 		root_dir = root_dir,
@@ -301,9 +307,20 @@ local function setup_or_attach()
 		capabilities = capabilities,
 		init_options = init_options,
 		on_attach = on_attach,
-	})
+	}
+end
+
+local function attach()
+	local state = vim.g.session_state["lang.java.jdtls"] or {}
+	local config = state.config
+	if config == nil then
+		config = get_setup_config()
+		state.config = config
+		vim.g.session_state["lang.java.jdtls"] = state
+	end
+	require("jdtls").start_or_attach(config)
 end
 
 return {
-	setup_or_attach = setup_or_attach,
+	attach = attach,
 }

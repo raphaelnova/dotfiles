@@ -17,8 +17,8 @@ return {
 				"bash",
 				"css",
 				"gitignore",
-				"haskell",
 				"html",
+				"java",
 				"javascript",
 				"json",
 				"markdown",
@@ -28,6 +28,7 @@ return {
 				"sql",
 				"vim",
 				"vimdoc",
+				"xml",
 				"yaml",
 			})
 
@@ -36,6 +37,8 @@ return {
 				"lazy",
 				"mason",
 				"NvimTree",
+				"TelescopePrompt",
+				"TelescopeResults",
 			}
 
 			local augroup = vim.api.nvim_create_augroup("TreesitterSetup", { clear = true })

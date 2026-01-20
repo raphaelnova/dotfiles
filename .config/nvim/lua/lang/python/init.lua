@@ -6,12 +6,11 @@ local M = {}
 --- downloaded yet, and configures them. Should run at most once per session.
 function M.setup_tools()
 
-	--- Treesitter parser ------------------------------------------------------
-	utils.ts_install("python")
-
-
 	--- LSP --------------------------------------------------------------------
 	utils.mason_install("pyright")
+
+	-- Extending:
+	-- https://github.com/neovim/nvim-lspconfig/blob/master/lsp/pyright.lua
 	vim.lsp.config("pyright", {
 		settings = {
 			pyright = {
@@ -66,10 +65,12 @@ end
 --- Config settings specific for Python, such as vim.opts and keymaps.
 --- @param bufnr number The ID of the buffer to apply these settings to.
 function M.setup_buffer(bufnr)
+	utils.once("lang.python.setup_tools", M.setup_tools)
 
 	--- Lang-specific options --------------------------------------------------
 	vim.bo[bufnr].tabstop = 4
 
+	vim.keymap.set("n", "<leader>co", "<cmd>LspPyrightOrganizeImports<CR>", { desc = "Organize imports." })
 
 	--- Which Key --------------------------------------------------------------
 	utils.try_with("which-key", function(whichkey)

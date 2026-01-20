@@ -6,10 +6,6 @@ local M = {}
 --- downloaded yet, and configures them. Should run at most once per session.
 function M.setup_tools()
 
-	--- Treesitter parser ------------------------------------------------------
-	utils.ts_install("lua")
-
-
 	--- LSP --------------------------------------------------------------------
 	utils.mason_install("lua-language-server")
 	vim.lsp.config("lua_ls", {
@@ -29,6 +25,7 @@ function M.setup_tools()
 						"${3rd}/luv/library",
 						"${3rd}/busted/library",
 						-- Lazy plugins
+						vim.fn.stdpath("data") .. "/lazy/lazy.nvim/lua",
 						vim.fn.stdpath("data") .. "/lazy/nvim-treesitter/lua",
 						-- Other libs
 						"/home/raphael/data/code/3rd-party/wezterm-types",
@@ -74,6 +71,7 @@ end
 --- Config settings specific for Python, such as vim.opts and keymaps.
 --- @param bufnr number The ID of the buffer to apply these settings to.
 function M.setup_buffer(bufnr)
+	utils.once("lang.lua.setup_tools", M.setup_tools)
 
 	--- Lang-specific options --------------------------------------------------
 	vim.bo[bufnr].tabstop = 3

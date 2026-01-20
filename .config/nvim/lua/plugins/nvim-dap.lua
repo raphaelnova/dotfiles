@@ -72,8 +72,8 @@ return {
 				-- not their Mason name. See:
 				-- https://github.com/jay-babu/mason-nvim-dap.nvim/blob/main/lua/mason-nvim-dap/mappings/source.lua
 				ensure_installed = {
-					"javadbg",  -- "java-debug-adapter"
-					"javatest", -- "java-test"
+					-- "javadbg",  -- "java-debug-adapter"
+					-- "javatest", -- "java-test"
 					"bash",     -- "bash-debug-adapter"
 				},
 			})
