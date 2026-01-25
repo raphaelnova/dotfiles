@@ -34,9 +34,13 @@ return {
 
 			local ignore_filetypes = {
 				"checkhealth",
+				"cmp_docs",
+				"cmp_menu",
+				"harpoon",
 				"lazy",
 				"mason",
 				"NvimTree",
+				"qf",
 				"TelescopePrompt",
 				"TelescopeResults",
 			}
