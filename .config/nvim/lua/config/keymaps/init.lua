@@ -11,7 +11,7 @@ local cmd = vim.api.nvim_create_user_command
 function M.vanilla()
 
 	map("n", "<leader>C", f.rotate_colorscheme, { desc = "Rotate colorschemes." })
-	map("n", "<leader>r", "<cmd>restart<cr>",   { desc = "Restart." })
+	map("n", "<leader>R", "<cmd>restart<cr>",   { desc = "Restart." })
 
 	-- Record macros with <leader>q
 	map("n", "q", "<nop>",     { noremap = true, silent = true })
@@ -121,9 +121,13 @@ function M.telescope()
 	map("n", "<leader>ff", builtin.find_files,          { desc = "Find Files." })
 	map("n", "<leader>fg", live_grep,                   { desc = "Find using Grep." })
 	map("n", "<leader>fd", builtin.diagnostics,         { desc = "Find Diagnostics." })
-	map("n", "<leader>fr", builtin.resume,              { desc = "Finder Resume." })
-	map("n", "<leader>f.", builtin.oldfiles,            { desc = "Find recent files." })
 	map("n", "<leader>fb", builtin.buffers,             { desc = "Find existing Buffers." })
+	map("n", "<leader>fh", builtin.help_tags,           { desc = "Find Neovim help tags." })
+	map("n", "<leader>fm", builtin.man_pages,           { desc = "Find man pages." })
+	map("n", "<leader>f.", builtin.oldfiles,            { desc = "Find recent files." })
+	map("n", "<leader>fT", builtin.pickers,             { desc = "Find all available Telescope pickers." })
+
+	map("n", "<leader>fr", builtin.resume,              { desc = "Resume last Telescope picker." })
 
 	-- code actions
 	map("n", "<leader>cr", builtin.lsp_references,      { desc = "Code go to References." })
@@ -208,7 +212,6 @@ function M.harpoon()
 	map("n", "M",          harpoon.mark,              { desc = "Mark Harpoon file." })
 	map("n", "U",          harpoon.unmark,            { desc = "Unmark nth Harpoon file." })
 	map("n", "<leader>H",  harpoon.toggle_quick_menu, { desc = "Toggle Harpoon menu." })
-	map("n", "<leader>fh", harpoon.toggle_telescope,  { desc = "Navigate through Harpoon marks using Telescope." })
 	map("n", "<leader>j",  harpoon.next_mark,         { desc = "Jump to next ↓ Harpoon mark." })
 	map("n", "<leader>k",  harpoon.prev_mark,         { desc = "Jump to prev ↑ Harpoon mark." })
 	map("n", "<leader>h",  harpoon.nth_mark,          { desc = "Jump to Nth Harpoon mark." })
