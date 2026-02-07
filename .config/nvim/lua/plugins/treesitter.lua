@@ -55,6 +55,7 @@ return {
 					end
 
 					local buf = ev.buf
+					local win = vim.api.nvim_get_current_win()
 					local lang = vim.treesitter.language.get_lang(ev.match) or ev.match
 
 					treesitter.install({ lang }):await(function(err)
@@ -63,9 +64,9 @@ return {
 							return
 						end
 						pcall(vim.treesitter.start, buf, lang)
-						vim.opt.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-						vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-						vim.opt.foldmethod = "expr"
+						vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+						vim.wo[win].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+						vim.wo[win].foldmethod = "expr"
 					end)
 				end,
 			})

@@ -30,38 +30,31 @@ return {
 			},
 			sections = {
 				lualine_a = { "mode" },
-				lualine_b = {},
-				lualine_c = { "filename" },
+				lualine_b = { "filename" },
+				lualine_c = { },
 
-				lualine_x = {
+				lualine_x = { },
+				lualine_y = {
 					{
 						"diagnostics",
-						-- colored = false,
 						symbols = {
 							error = "✖ ",
 							warn = "▲ ",
 							info = "⚑ ",
 							hint = "✚ ",
 						},
-						-- diagnostics_color = {
-						-- 	error = "DiagnosticError",
-						-- 	warn = "DiagnosticWarn",
-						-- 	info = "DiagnosticInfo",
-						-- 	hint = "DiagnosticHint",
-						-- },
 					},
 				},
-				lualine_y = {},
-				lualine_z = {},
+				lualine_z = { "lsp_status" },
 			},
 			inactive_sections = {
-				lualine_a = {},
-				lualine_b = {},
-				lualine_c = { "filename" },
+				lualine_a = { "filename" },
+				lualine_b = { },
+				lualine_c = { },
 
-				lualine_x = { "location" },
-				lualine_y = {},
-				lualine_z = {},
+				lualine_x = { },
+				lualine_y = { },
+				lualine_z = { },
 			},
 			tabline = {},
 			winbar = {},

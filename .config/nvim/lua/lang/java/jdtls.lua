@@ -28,6 +28,7 @@ local function get_bundles()
 	local bundles = {}
 	vim.list_extend(bundles, debug_jars)
 	vim.list_extend(bundles, test_jars)
+	vim.list_extend(bundles, require("spring_boot").java_extensions())
 
 	return bundles
 end

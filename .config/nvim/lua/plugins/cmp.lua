@@ -23,14 +23,51 @@ return {
 		config = function()
 			local cmp = require("cmp")
 			local luasnip = require("luasnip")
+
+			---@type table<string, string> Defines icons for the cmp menu
+			local kind_icons = {
+			  Class = "󰠱",
+			  Color = "󰏘",
+			  Constant = "󰏿",
+			  Constructor = "󰒓", -- 
+			  Enum = "",
+			  EnumMember = "",
+			  Event = "󱐋", -- 
+			  Field = "󱡠", -- 󰇽 
+			  File = "󰈙",
+			  Folder = "󰉋",
+			  Function = "󰊕",
+			  Interface = "", -- 
+			  Keyword = "󰌋",
+			  Method = "󰆧",
+			  Module = "󰅩", --   󰆦
+			  Operator = "󰆕",
+			  Property = "󰜢",
+			  Reference = "", -- 󰬲
+			  Snippet = "", -- 󰅪
+			  Struct = "",
+			  Text = "󰦨", -- 
+			  TypeParameter = "󰅲",
+			  Unit = "",
+			  Value = "󰎠",
+			  Variable = "󰂡",
+			}
+
+			vim.opt.completeopt = "menu,menuone,preview,noinsert"
+
 			cmp.setup({
-				completion = {
-					-- menu: display options in a row
-					-- menuone: auto select the first option
-					-- preview: auto display the completion as you navigate
-					-- noselect: require enter to actually complete with the selected option
-					-- completeopt = "menu,menuone,preview,noselect",
-					completeopt = "menu,menuone,preview,noinsert",
+				formatting = {
+					format = function (entry, vim_item)
+						vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
+						vim_item.menu = ({
+							nvim_lsp = "[LSP]",
+							luasnip = "[LuaSnip]",
+							buffer = "[Buffer]",
+							path = "[Path]",
+						})[entry.source.name]
+
+						return vim_item
+					end,
 				},
 				snippet = {
 					expand = function(args)

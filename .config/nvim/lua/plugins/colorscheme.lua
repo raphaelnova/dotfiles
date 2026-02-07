@@ -4,7 +4,13 @@ local function add_colorscheme(name)
 	vim.g.colorschemes = colorschemes
 end
 
+---@type string[] The list of colorschemes added to Neovim
 vim.g.colorschemes = {}
+
+-- local colors = require("config.colors")
+-- local hex_bg = vim.api.nvim_get_hl(0, { name = "Normal" }).bg
+-- local hex_fg = colors.get_hex_gray_with_contrast(string.format("#%06X", hex_bg), 1.4)
+
 return {
 	{
 		"catppuccin/nvim",
@@ -26,9 +32,9 @@ return {
 						-- Grays with same luminance as original colors
 						base = "#1F1F1F",
 						mantle = "#191919",
-						surface2 = "#5C5C5C",
-						surface1 = "#484848",
 						surface0 = "#333333",
+						surface1 = "#484848",
+						surface2 = "#5C5C5C",
 
 						-- My own, doesn't override any existing color
 						surfaceN = "#282828",

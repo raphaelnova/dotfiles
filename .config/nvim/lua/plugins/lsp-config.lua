@@ -5,7 +5,6 @@ return {
 	},
 	{
 		"neovim/nvim-lspconfig",
-		keys = require("config.keymaps").lsp(),
 		config = function()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
@@ -17,6 +16,8 @@ return {
 
 			-- inline type hints (off by default, but toggleable)
 			vim.lsp.inlay_hint.enable(false)
+
+			require("config.keymaps").lsp()
 		end,
 	},
 	{
@@ -36,9 +37,24 @@ return {
 			},
 		},
 	},
+	-- {
+	-- 	"mfussenegger/nvim-jdtls",
+	-- 	branch = "master",
+	-- 	dependencies = { "mfussenegger/nvim-dap" },
+	-- },
+	-- {
+	-- 	"JavaHello/spring-boot.nvim",
+	-- 	enabled = false,
+	-- },
 	{
-		"mfussenegger/nvim-jdtls",
-		branch = "master",
-		dependencies = { "mfussenegger/nvim-dap" },
+		"nvim-java/nvim-java",
+		-- ft = { "java" },
+		dependencies = {
+			"nvim-java/spring-boot.nvim",
+		},
+		config = function()
+			require("java").setup()
+			vim.lsp.enable('jdtls')
+		end,
 	},
 }

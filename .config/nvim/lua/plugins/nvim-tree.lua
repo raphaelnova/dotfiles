@@ -42,6 +42,7 @@ return {
 					".factorypath",
 					".project",
 					".vscode",
+					".sdkmanrc",
 					".mypy_cache",
 					"__pycache__",
 					".venv",

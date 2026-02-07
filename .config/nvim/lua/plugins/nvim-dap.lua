@@ -6,7 +6,7 @@ return {
 		"mfussenegger/nvim-dap",
 		dependencies = {
 			"rcarriga/nvim-dap-ui",
-			"nvim-neotest/nvim-nio",             -- async IO (what for?)
+			"nvim-neotest/nvim-nio",             -- async IO used by nvim-dap-ui
 			"theHamsta/nvim-dap-virtual-text",   -- shows var values while debugging
 			"jbyuki/one-small-step-for-vimkind", -- debug nvim plugins
 			"mfussenegger/nvim-dap-python",

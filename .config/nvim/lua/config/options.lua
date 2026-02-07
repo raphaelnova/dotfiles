@@ -15,8 +15,7 @@ vim.opt.foldenable = true
 vim.opt.foldtext = ''       -- enable transparent folds (with syntax hightlight)
 vim.opt.foldlevel = 99      -- open all folds by default
 vim.opt.foldlevelstart = 99 -- ensure new buffers start unfolded
-vim.opt.foldmethod = "expr" -- fold by syntax tree with treesitter (below)
-vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldmethod = "indent" -- Treesitter changes this to 'expr' after parsing
 vim.opt.fillchars = { fold = " " }
 
 -- Indent options

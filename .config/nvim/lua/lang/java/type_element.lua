@@ -86,7 +86,7 @@ local function class_template(kind, pkg, name)
 	return lines
 end
 
-function _G.java_package_complete(arg_lead, cmd_line, cursor_pos)
+function _G.java_package_complete(arg_lead, _, _)
 	local root_pkg = _G.__java_root_pkg
 	local root_dir = _G.__java_root_dir
 

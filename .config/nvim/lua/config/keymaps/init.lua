@@ -129,6 +129,9 @@ function M.telescope()
 
 	map("n", "<leader>fr", builtin.resume,              { desc = "Resume last Telescope picker." })
 
+	-- Find LSP symbol (Find SpringBoot objects with spring-boot.nvim)
+	map("n", "<leader>fs", builtin.lsp_workspace_symbols, { desc = "Find symbol." })
+
 	-- code actions
 	map("n", "<leader>cr", builtin.lsp_references,      { desc = "Code go to References." })
 	map("n", "<leader>ci", builtin.lsp_implementations, { desc = "Code go to Implementations." })
@@ -136,7 +139,6 @@ end
 
 ---Keys for basic LSP actions
 function M.lsp()
-	map("n",          "<leader>ch", vim.lsp.buf.hover,         { desc = "Code Hover documentation." })
 	map("n",          "<leader>cd", vim.lsp.buf.definition,    { desc = "Code go to Definition." })
 	map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action,   { desc = "Code Actions." })
 	map("n",          "<leader>cR", vim.lsp.buf.rename,        { desc = "Code Rename." })

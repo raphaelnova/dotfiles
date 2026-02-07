@@ -408,25 +408,37 @@ subtitle() {
   local mime
   local encoding
 
-  encoding="$(file --brief --mime-encoding "$subs")"
-  if [[ ! "$encoding" == "utf-8" ]]; then
+  encoding="$(file --brief --mime-encoding "${subs}")"
+  if [[ ! "${encoding}" == "utf-8" ]]; then
     local temp_subs
     temp_subs="$(mktemp /tmp/subs_XXXXX.srt)"
-    iconv -f "$encoding" -t "utf-8" <"$subs" >"$temp_subs"
-    cp "$temp_subs" "$subs"
-    rm "$temp_subs"
-    echo "Converted from $encoding to utf-8."
+
+    if [[ "${encoding}" == "unknown-8bit" ]]; then
+      # Maybe Windows-1252 with “” quotes (bytes 0x93 and 0x94)
+      iconv -f cp1252 -t "utf-8" <"${subs}" >"${temp_subs}"
+    else
+      # Any other encoding
+      iconv -f "${encoding}" -t "utf-8" <"${subs}" >"${temp_subs}"
+    fi
+
+    if [[ $? == 0 && -s "${temp_subs}" ]]; then
+      mv "${temp_subs}" "${subs}"
+      echo "Converted from ${encoding} to utf-8."
+    else
+      echo "Failed to convert subs from ${encoding} to utf-8. Exiting."
+      return
+    fi
   fi
 
-  mime="$(file --brief "$subs")"
-  if [[ "$mime" =~ "CRLF line terminators" ]]; then
-    dos2unix --quiet "$subs"
+  mime="$(file --brief "${subs}")"
+  if [[ "${mime}" =~ "CRLF line terminators" ]]; then
+    dos2unix --quiet "${subs}"
     echo "Converted from DOS EOL to Unix EOL."
   fi
 
   echo "Processing..."
   ffmpeg -hide_banner -loglevel error \
-    -i "$movie" -i "$subs" \
+    -i "${movie}" -i "${subs}" \
     -map 0:v \
     -map 0:a \
     -map 1 \
@@ -436,7 +448,7 @@ subtitle() {
     -metadata:s:a:0 language=eng \
     -metadata:s:s:0 language=por \
     -disposition:s:0 +default+forced \
-    "$dest" -y
+    "${dest}" -y
 }
 
 # Executes a script with trace on (-x) and prepends each line

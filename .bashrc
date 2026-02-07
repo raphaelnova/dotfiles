@@ -3,9 +3,14 @@
 # SC1091 = Not following: openBinaryFile
 
 # Check for TTY, interactive non-login shell and no tmux session
-if tty -s && ! shopt -q login_shell && [[ "$-" == *i* && -z "$TMUX" ]]; then
-  if [[ "$TERM_PROGRAM" != "vscode" ]]; then
-    tmux
+if tty -s && ! shopt -q login_shell && [[ "$-" == *i* && -z "${TMUX}" ]]; then
+  if [[ "${TERM_PROGRAM}" != "vscode" ]]; then
+    if [[ "$(tmux list-sessions 2>&1)" =~ "no server running" ]]; then
+      # first session named
+      tmux new-session -s tmux
+    else
+      tmux
+    fi
     exit
   fi
 fi
@@ -108,3 +113,18 @@ SDKMAN_COMPLETION="$SDKMAN_DIR/contrib/completion/bash/sdk"
 [[ -s "$SDKMAN_COMPLETION" ]] && source "$SDKMAN_COMPLETION"
 
 [[ -s ~/gradle-completion.bash ]] && source ~/gradle-completion.bash
+
+
+#############################################
+#
+# DIE WEZTERM INTEGRATION!!!! FKN HELL!!!
+#
+#############################################
+
+export WEZTERM_SHELL_SKIP_ALL=1
+
+__bp_preexec_invoke_exec() { :; }
+__bp_adjust_histcontrol() { :; }
+__bp_interactive_mode() { :; }
+__wezterm_osc7() { :; }
+
