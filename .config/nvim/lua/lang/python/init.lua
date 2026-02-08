@@ -70,30 +70,8 @@ function M.setup_buffer(bufnr)
 	--- Lang-specific options --------------------------------------------------
 	vim.bo[bufnr].tabstop = 4
 
-	vim.keymap.set("n", "<leader>co", "<cmd>LspPyrightOrganizeImports<CR>", { desc = "Organize imports." })
-
-	--- Which Key --------------------------------------------------------------
-	utils.try_with("which-key", function(whichkey)
-		whichkey.add({
-			{
-				buffer = bufnr,
-				{
-					"<leader>d",
-					group = "debug",
-				},
-				{
-					"<leader>db",
-					"<cmd>lua require('dap').toggle_breakpoint()<CR>",
-					desc = "Toggle breakpoint",
-				},
-				{
-					"<leader>dc",
-					"<cmd>lua require('dap').continue()<CR>",
-					desc = "Continue",
-				},
-			},
-		})
-	end)
+	--- Keymaps ----------------------------------------------------------------
+	require("config.keymaps").python(bufnr)
 end
 
 return M

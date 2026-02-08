@@ -33,6 +33,25 @@ function M.setup_buffer(bufnr)
 	vim.bo[bufnr].tabstop = 4
 
 
+	--- Keymaps ----------------------------------------------------------------
+	require("config.keymaps").java(bufnr)
+
+
+	--- User commands (buffer-local) -------------------------------------------
+	local jdtls = require("jdtls")
+	vim.api.nvim_buf_create_user_command(bufnr, "JdtUpdateConfig", jdtls.update_project_config, {})
+	vim.api.nvim_buf_create_user_command(bufnr, "JdtBytecode", jdtls.javap, {})
+	vim.api.nvim_buf_create_user_command(bufnr, "JdtShell", jdtls.jshell, {})
+	vim.api.nvim_buf_create_user_command(bufnr, "JdtCompile", function(opts)
+		jdtls.compile(opts.args)
+	end, {
+		nargs = "?",
+		complete = function(_, _, _)
+			return jdtls._complete_compile()
+		end,
+	})
+
+
 	--- LSP --------------------------------------------------------------------
 	require("lang.java.jdtls").attach()
 end

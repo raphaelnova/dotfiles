@@ -22,6 +22,13 @@ return {
 						},
 						sorting_strategy = "ascending",
 					},
+					buffers = {
+						mappings = {
+							n = {
+								["d"] = require("telescope.actions").delete_buffer,
+							}
+						}
+					},
 				},
 				extensions = {
 					["ui-select"] = {

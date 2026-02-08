@@ -12,10 +12,9 @@ return {
 		},
 		spec = {
 			{ "<leader>c", group = "Code" },
-			{ "<leader>d", group = "Debug" }, -- icon = { icon = "# ", hl = "TrailingWhitespaceStyle" }
+			{ "<leader>d", group = "Debug" },
 			{ "<leader>f", group = "Find" },
 			{ "<leader>g", group = "Git" },
-			{ "<leader>J", group = "Java actions" },
 			{ "<leader>s", group = "Shell" },
 			{ "<leader>w", group = "Window" },
 		},

@@ -54,6 +54,9 @@ return {
 							CursorColumn = { bg = cp.surfaceN },
 							CursorLine = { bg = cp.surfaceN },
 
+							-- Cmp interface kind (to differ from class kind)
+							CmpItemKindInterface = { fg = "#ffad91" },
+
 							-- Slightly darker and no bold face
 							Visual = { bg = cp.surface0, style = {} },
 

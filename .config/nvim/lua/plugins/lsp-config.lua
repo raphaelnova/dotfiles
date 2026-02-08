@@ -16,8 +16,6 @@ return {
 
 			-- inline type hints (off by default, but toggleable)
 			vim.lsp.inlay_hint.enable(false)
-
-			require("config.keymaps").lsp()
 		end,
 	},
 	{

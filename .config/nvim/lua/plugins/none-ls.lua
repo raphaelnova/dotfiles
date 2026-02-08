@@ -20,7 +20,6 @@ return {
 					null_ls.builtins.formatting.prettier,           -- Anything else
 				},
 			})
-			require("config.keymaps").none_ls()
 		end,
 	},
 	{

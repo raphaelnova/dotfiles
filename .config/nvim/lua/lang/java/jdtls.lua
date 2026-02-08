@@ -40,73 +40,6 @@ local function get_workspace()
 	return workspace_path .. project_name
 end
 
-local function java_keymaps()
-	local jdtls = require("jdtls")
-
-	vim.api.nvim_buf_create_user_command(0, "JdtUpdateConfig", jdtls.update_project_config, {})
-	vim.api.nvim_buf_create_user_command(0, "JdtBytecode", jdtls.javap, {})
-	vim.api.nvim_buf_create_user_command(0, "JdtShell", jdtls.jshell, {})
-	vim.api.nvim_buf_create_user_command(0, "JdtCompile", function(opts)
-		jdtls.compile(opts.args)
-	end, {
-		nargs = "?",
-		complete = function(_, _, _)
-			return require("jdtls")._complete_compile()
-		end,
-	})
-
-	vim.keymap.set(
-		"n",
-		"<leader>Jn",
-		"<cmd>lua require('lang.java.type_element').new_type_element()<CR>",
-		{ desc = "[J]ava [N]ew type element." }
-	)
-	vim.keymap.set(
-		"n",
-		"<leader>Jo",
-		"<cmd>lua require('jdtls').organize_imports()<CR>",
-		{ desc = "[J]ava [O]rganize imports." }
-	)
-	vim.keymap.set(
-		"n",
-		"<leader>Jv",
-		"<cmd>lua require('jdtls').extract_variable()<CR>",
-		{ desc = "[J]ava extract [V]ariable." }
-	)
-	vim.keymap.set(
-		"v",
-		"<leader>Jv",
-		"<esc><cmd>lua require('jdtls').extract_variable(true)<CR>",
-		{ desc = "[J]ava extract [V]ariable." }
-	)
-	vim.keymap.set(
-		"n",
-		"<leader>JC",
-		"<cmd>lua require('jdtls').extract_constant()<CR>",
-		{ desc = "[J]ava extract [C]onstant." }
-	)
-	vim.keymap.set(
-		"v",
-		"<leader>JC",
-		"<esc><cmd>lua require('jdtls').extract_constant(true)<CR>",
-		{ desc = "[J]ava extract [C]onstant." }
-	)
-	vim.keymap.set(
-		"n",
-		"<leader>Jt",
-		"<cmd>lua require('jdtls').test_nearest_method()<CR>",
-		{ desc = "[J]ava [T]est method." }
-	)
-	vim.keymap.set(
-		"v",
-		"<leader>Jt",
-		"<esc><cmd>lua require('jdtls').test_nearest_method(true)<CR>",
-		{ desc = "[J]ava [T]est method." }
-	)
-	vim.keymap.set("n", "<leader>JT", "<cmd>lua require('jdtls').test_class()<CR>", { desc = "[J]ava [T]est class." })
-	vim.keymap.set("n", "<leader>Ju", "<cmd>JdtUpdateConfig<CR>", { desc = "[J]ava [U]update config." })
-end
-
 local function get_setup_config()
 	local launcher, os_config, lombok = get_launcher()
 	local bundles = get_bundles()
@@ -270,8 +203,6 @@ local function get_setup_config()
 	}
 
 	local on_attach = function(_, _)
-		java_keymaps()
-
 		local dap = require("jdtls.dap")
 		dap.setup_dap()                    -- java debug adapter
 		dap.setup_dap_main_class_configs() -- find the main method. Unreliable, see author's notes

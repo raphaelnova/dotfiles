@@ -164,29 +164,4 @@ function M.harpoon.nth_mark()
 	end)
 end
 
---
--- Spring Boot namespace
---
-M.springboot = {}
-
----Starts a SpringBoot app
-function M.springboot.run()
-	require("springboot-nvim").boot_run()
-end
-
----Generates a new Java class
-function M.springboot.generate_class()
-	require("springboot-nvim").generate_class()
-end
-
----Generates a new Java interface
-function M.springboot.generate_interface()
-	require("springboot-nvim").generate_interface()
-end
-
----Generates a new Java enum
-function M.springboot.generate_enum()
-	require("springboot-nvim").generate_enum()
-end
-
 return M

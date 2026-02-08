@@ -68,7 +68,7 @@ function M.setup_tools()
 	end)
 end
 
---- Config settings specific for Python, such as vim.opts and keymaps.
+--- Config settings specific for Lua, such as vim.opts and keymaps.
 --- @param bufnr number The ID of the buffer to apply these settings to.
 function M.setup_buffer(bufnr)
 	utils.once("lang.lua.setup_tools", M.setup_tools)

@@ -125,30 +125,23 @@ function M.telescope()
 	map("n", "<leader>fh", builtin.help_tags,           { desc = "Find Neovim help tags." })
 	map("n", "<leader>fm", builtin.man_pages,           { desc = "Find man pages." })
 	map("n", "<leader>f.", builtin.oldfiles,            { desc = "Find recent files." })
-	map("n", "<leader>fT", builtin.pickers,             { desc = "Find all available Telescope pickers." })
+	map("n", "<leader>fT", builtin.builtin,             { desc = "Find all available Telescope pickers." })
 
 	map("n", "<leader>fr", builtin.resume,              { desc = "Resume last Telescope picker." })
 
 	-- Find LSP symbol (Find SpringBoot objects with spring-boot.nvim)
 	map("n", "<leader>fs", builtin.lsp_workspace_symbols, { desc = "Find symbol." })
-
-	-- code actions
-	map("n", "<leader>cr", builtin.lsp_references,      { desc = "Code go to References." })
-	map("n", "<leader>ci", builtin.lsp_implementations, { desc = "Code go to Implementations." })
 end
 
----Keys for basic LSP actions
-function M.lsp()
-	map("n",          "<leader>cd", vim.lsp.buf.definition,    { desc = "Code go to Definition." })
-	map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action,   { desc = "Code Actions." })
-	map("n",          "<leader>cR", vim.lsp.buf.rename,        { desc = "Code Rename." })
-	map("n",          "<leader>cD", vim.lsp.buf.declaration,   { desc = "Code go to Declaration." })
-	map("n",          "<leader>cp", vim.diagnostic.open_float, { desc = "Code show Problem." })
-end
-
----Keys for none-ls (formatter)
-function M.none_ls()
-	map({ "n", "v" }, "<leader>cf", vim.lsp.buf.format, { desc = "Code Format." })
+---Keys for LSP actions (buffer-local, triggered by LspAttach autocmd)
+---@param bufnr number
+function M.lsp(bufnr)
+	map("n",          "<leader>cd", vim.lsp.buf.definition,    { buffer = bufnr, desc = "Code go to Definition." })
+	map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action,   { buffer = bufnr, desc = "Code Actions." })
+	map("n",          "<leader>cR", vim.lsp.buf.rename,        { buffer = bufnr, desc = "Code Rename." })
+	map("n",          "<leader>cD", vim.lsp.buf.declaration,   { buffer = bufnr, desc = "Code go to Declaration." })
+	map("n",          "<leader>cp", vim.diagnostic.open_float, { buffer = bufnr, desc = "Code show Problem." })
+	map({ "n", "v" }, "<leader>cf", vim.lsp.buf.format,        { buffer = bufnr, desc = "Code Format." })
 end
 
 ---Keys for DAP (debugger)
@@ -178,18 +171,55 @@ function M.dap()
 	-- map("n", "<leader>dl", dap.run_last,    { desc = "Run Last" })
 	-- map("n", "<leader>dP", dap.pause,       { desc = "Pause" })
 	-- map("n", "<leader>dr", dap.repl.toggle, { desc = "Toggle REPL" })
-	-- map("n", "<leader>dt", dap.terminate,   { desc = "Terminate" })
 	-- map("n", "<leader>dw", function() require('dap.ui.widgets').hover() end, { desc = "Widgets" })
 end
 
----Keys for SpringBoot
-function M.springboot()
-	local springboot = f.springboot
+---Keys for nvim-cmp (completion). Returns a cmp mapping table to be consumed
+---by cmp.setup(). Uses cmp's own mapping API since completion keymaps can't
+---be expressed as vim.keymap.set().
+---@return table cmp mapping preset
+function M.cmp()
+	local cmp = require("cmp")
+	local luasnip = require("luasnip")
 
-	map("n", "<leader>Jr", springboot.run,                { desc = "Run SpringBoot." })
-	map("n", "<leader>Jc", springboot.generate_class,     { desc = "Create Java Class." })
-	map("n", "<leader>Ji", springboot.generate_interface, { desc = "Create Java Interface." })
-	map("n", "<leader>Je", springboot.generate_enum,      { desc = "Create Java Enum." })
+	return cmp.mapping.preset.insert({
+		["<C-Space>"] = cmp.mapping.complete({ reason = cmp.ContextReason.Auto }),
+		["<C-k>"] = cmp.mapping.select_prev_item(),
+		["<C-j>"] = cmp.mapping.select_next_item(),
+		["<C-p>"] = cmp.mapping(function(fallback)
+			if luasnip.choice_active() then
+				luasnip.change_choice(-1)
+			else
+				fallback()
+			end
+		end, { "i", "s" }),
+		["<C-n>"] = cmp.mapping(function(fallback)
+			if luasnip.choice_active() then
+				luasnip.change_choice(1)
+			else
+				fallback()
+			end
+		end, { "i", "s" }),
+		["<C-b>"] = cmp.mapping.scroll_docs(-4),
+		["<C-f>"] = cmp.mapping.scroll_docs(4),
+		["<Tab>"] = cmp.mapping(function(fallback)
+			if cmp.visible() then
+				cmp.confirm({ select = true })
+			elseif luasnip.expand_or_jumpable() then
+				luasnip.jump(1)
+			else
+				fallback()
+			end
+		end, { "i", "s" }),
+		["<S-Tab>"] = cmp.mapping(function(fallback)
+			if luasnip.jumpable(-1) then
+				luasnip.jump(-1)
+			else
+				fallback()
+			end
+		end, { "i", "s" }),
+		["<C-e>"] = cmp.mapping.abort(),
+	})
 end
 
 ---Keys for Git
@@ -225,10 +255,66 @@ function M.nvim_tree()
 	map("n", "<leader>te", f.nvim_tree_hl,            { desc = "Highlight current buffer in NvimTree." })
 end
 
+-- NOTE: Telescope picker-internal mappings (C-j/C-k/C-n/C-p for navigation
+-- within the picker) live in lua/plugins/telescope.lua as telescope config.
+-- Treesitter textobjects keymaps ([f, ]f, etc.) live in lua/plugins/treesitter.lua
+-- as Lazy `keys` specs for lazy-loading the plugin.
+
+---Keys for Java using nvim-java (buffer-local, called from lua/lang/java)
+---@param bufnr number The buffer ID
+function M.java(bufnr)
+	local javafns = require("lang.java.type_element")
+	map("n", "<leader>Jn", javafns.new_type_element, { buffer = bufnr, desc = "Java new type element." })
+end
+
+---Keys for Java using JDTLS (buffer-local, called from lua/lang/java)
+---@param bufnr number The buffer ID
+function M.jdtls(bufnr)
+	local jdtls = require("jdtls")
+	local javafns = require("lang.java.type_element")
+
+	map("n", "<leader>Jn", javafns.new_type_element,   { buffer = bufnr, desc = "Java new type element." })
+	map("n", "<leader>Jo", jdtls.organize_imports,     { buffer = bufnr, desc = "Java organize imports." })
+	map("n", "<leader>Jv", jdtls.extract_variable,     { buffer = bufnr, desc = "Java extract variable." })
+	map("v", "<leader>Jv", function()
+		jdtls.extract_variable(true)
+	end, { buffer = bufnr, desc = "Java extract variable." })
+	map("n", "<leader>JC", jdtls.extract_constant,     { buffer = bufnr, desc = "Java extract constant." })
+	map("v", "<leader>JC", function()
+		jdtls.extract_constant(true)
+	end, { buffer = bufnr, desc = "Java extract constant." })
+	map("n", "<leader>Jt", jdtls.test_nearest_method,  { buffer = bufnr, desc = "Java test method." })
+	map("v", "<leader>Jt", function()
+		jdtls.test_nearest_method(true)
+	end, { buffer = bufnr, desc = "Java test method." })
+	map("n", "<leader>JT", jdtls.test_class,           { buffer = bufnr, desc = "Java test class." })
+	map("n", "<leader>Ju", "<cmd>JdtUpdateConfig<CR>", { buffer = bufnr, desc = "Java update config." })
+
+	-- which-key group (buffer-local)
+	local ok, wk = pcall(require, "which-key")
+	if ok then
+		wk.add({ { "<leader>J", group = "Java actions", buffer = bufnr } })
+	end
+end
+
+---Keys for Python (buffer-local, called from lua/lang/python)
+---@param bufnr number
+function M.python(bufnr)
+	map("n", "<leader>co", "<cmd>LspPyrightOrganizeImports<CR>", { buffer = bufnr, desc = "Organize imports." })
+end
+
 ---Autocmd to load vanilla keymaps on initialization
 vim.api.nvim_create_autocmd("VimEnter", {
-	group = vim.api.nvim_create_augroup("keymaps", { clear = true }),
+	group = vim.api.nvim_create_augroup("keymaps_vanilla", { clear = true }),
 	callback = M.vanilla,
+})
+
+---Autocmd to set buffer-local LSP keymaps when a language server attaches
+vim.api.nvim_create_autocmd("LspAttach", {
+	group = vim.api.nvim_create_augroup("keymaps_lsp", { clear = true }),
+	callback = function(ev)
+		M.lsp(ev.buf)
+	end,
 })
 
 return M
