@@ -10,7 +10,7 @@ local colors = require("colors")
 --- @type table|Config
 local config = {}
 if wezterm.config_builder then
-  config = wezterm.config_builder()
+	config = wezterm.config_builder()
 end
 
 --
@@ -20,8 +20,8 @@ config.default_prog = { "/usr/bin/bash" }
 
 -- Restart tmux with `tmux kill-server` to propagate any changes here
 config.set_environment_variables = {
-  -- Disable shell integration (which overrides HISTCONTROL)
-  WEZTERM_SHELL_SKIP_ALL = "1",
+	-- Disable shell integration (which overrides HISTCONTROL)
+	WEZTERM_SHELL_SKIP_ALL = "1",
 }
 
 config.color_schemes = { ["custom-catpuccin-mocha"] = colors.custom_mocha }
@@ -29,23 +29,23 @@ config.color_scheme = "custom-catpuccin-mocha"
 
 config.font_size = 10.0
 config.font = wezterm.font_with_fallback({
-  {
-    family = "FiraCode Nerd Font",
-    weight = "Regular",
-    harfbuzz_features = {
-      -- https://wezterm.org/config/font-shaping.html
-      -- https://github.com/tonsky/FiraCode/wiki/How-to-enable-stylistic-sets
-      "ss01", -- r
-      "ss02", -- <= >=
-      "ss03", -- &
-      "ss04", -- $
-      "ss08", -- == === != !==
-      "ss09", -- >>= <<= ||= |=
-      "cv30", -- |
-    },
-  },
-  { family = "Ubuntu Mono", scale = 1.2, weight = "Regular" },
-  -- $ wezterm ls-font --list-system | less
+	{
+		family = "FiraCode Nerd Font",
+		weight = "Regular",
+		harfbuzz_features = {
+			-- https://wezterm.org/config/font-shaping.html
+			-- https://github.com/tonsky/FiraCode/wiki/How-to-enable-stylistic-sets
+			"ss01", -- r
+			"ss02", -- <= >=
+			"ss03", -- &
+			"ss04", -- $
+			"ss08", -- == === != !==
+			"ss09", -- >>= <<= ||= |=
+			"cv30", -- |
+		},
+	},
+	{ family = "Ubuntu Mono", scale = 1.2, weight = "Regular" },
+	-- $ wezterm ls-font --list-system | less
 })
 
 --
@@ -73,13 +73,22 @@ config.window_decorations = "RESIZE"
 -- config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
 
 config.window_padding = {
-  top = '3px',
-  left = '0.5cell',
-  right = '0.5cell',
-  bottom = 0,
+	top = "3px",
+	left = "0.5cell",
+	right = "0.5cell",
+	bottom = 0,
 }
 
 config.initial_cols = 140
 config.initial_rows = 35
+
+config.keys = {
+	{
+		-- Disable unicode picker
+		key = "u",
+		mods = "CTRL|SHIFT",
+		action = wezterm.action.DisableDefaultAssignment,
+	},
+}
 
 return config
