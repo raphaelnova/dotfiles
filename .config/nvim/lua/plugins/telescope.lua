@@ -16,6 +16,7 @@ return {
 			telescope.setup({
 				pickers = {
 					find_files = {
+						hidden = true,
 						layout_config = {
 							prompt_position = "top",
 							preview_cutoff = 9999, -- disable previewer
@@ -36,6 +37,10 @@ return {
 					},
 				},
 				defaults = {
+					file_ignore_patterns = {
+						"node_modules",
+						".git",
+					},
 					mappings = {
 						i = {
 							["<C-n>"] = "cycle_history_next",
