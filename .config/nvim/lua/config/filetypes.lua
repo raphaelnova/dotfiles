@@ -7,6 +7,7 @@ vim.filetype.add({
 		["Vagrantfile"] = "ruby",
 		[".bashrc"] = "bash",
 		[".bash_profile"] = "bash",
+		[".prettierrc"] = "yaml",
 	},
 	extension = {
 		cypher = "cypher",

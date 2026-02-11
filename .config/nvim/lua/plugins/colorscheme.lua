@@ -93,6 +93,9 @@ return {
 							-- Highlight groups defined by the LS (treesitter preferred)
 							-- https://github.com/catppuccin/nvim/blob/main/lua/catppuccin/groups/semantic_tokens.lua
 							["@lsp.type.variable"] = {},
+
+							-- Markdown links were #h2 color with moxide
+							["@lsp.type.decorator.markdown"] = { link = "@markup.link.label" },
 						}
 					end,
 				},

@@ -14,6 +14,17 @@ return {
 			vim.lsp.config("ts_ls", { capabilities = capabilities })
 			vim.lsp.enable("ts_ls")
 
+			vim.lsp.config("markdown_oxide", {
+				capabilities = vim.tbl_deep_extend("force", capabilities, {
+					workspace = {
+						didChangeWatchedFiles = {
+							dynamicRegistration = false,
+						},
+					},
+				})
+			})
+			vim.lsp.enable("markdown_oxide")
+
 			-- inline type hints (off by default, but toggleable)
 			vim.lsp.inlay_hint.enable(false)
 		end,
