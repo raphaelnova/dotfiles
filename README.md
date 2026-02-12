@@ -73,7 +73,7 @@ revision. A `dots reset` should do the trick.
 > contents. Make sure that's what you want, or backup your files.
 
 ```bash
-git clone --bare git@github.com:raphaelnova/dotfiles $HOME/.dotfiles.git
+git clone --bare https://github.com/raphaelnova/dotfiles.git $HOME/.dotfiles.git
 
 alias dots="git --git-dir=\"$HOME/.dotfiles.git\" --work-tree=$HOME"
 dots config --local status.showUntrackedFiles no
@@ -83,6 +83,6 @@ dots config --local status.relativePaths no
 dots status
 
 # Resetting will discard these "modifications" and "restore" the files
-dots reset
+dots reset --hard HEAD
 ```
 
