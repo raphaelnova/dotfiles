@@ -12,16 +12,9 @@ function M.setup_tools()
 
 
 	--- Formatter and linter ---------------------------------------------------
-	local null_ls = require("null-ls")
 	utils.mason_install("google-java-format", function()
-		null_ls.register({
-			null_ls.builtins.formatting.google_java_format,
-		})
+		require("conform").formatters_by_ft.java = { "google-java-format" }
 	end)
-	-- Local install, no Mason here
-	null_ls.register({
-		null_ls.builtins.formatting.xmllint,
-	})
 end
 
 --- Config settings specific for Java, such as vim.opts and keymaps.
@@ -38,22 +31,23 @@ function M.setup_buffer(bufnr)
 
 
 	--- User commands (buffer-local) -------------------------------------------
-	local jdtls = require("jdtls")
-	vim.api.nvim_buf_create_user_command(bufnr, "JdtUpdateConfig", jdtls.update_project_config, {})
-	vim.api.nvim_buf_create_user_command(bufnr, "JdtBytecode", jdtls.javap, {})
-	vim.api.nvim_buf_create_user_command(bufnr, "JdtShell", jdtls.jshell, {})
-	vim.api.nvim_buf_create_user_command(bufnr, "JdtCompile", function(opts)
-		jdtls.compile(opts.args)
-	end, {
-		nargs = "?",
-		complete = function(_, _, _)
-			return jdtls._complete_compile()
-		end,
-	})
+	-- local jdtls = require("jdtls")
+	-- vim.api.nvim_buf_create_user_command(bufnr, "JdtUpdateConfig", jdtls.update_project_config, {})
+	-- vim.api.nvim_buf_create_user_command(bufnr, "JdtBytecode", jdtls.javap, {})
+	-- vim.api.nvim_buf_create_user_command(bufnr, "JdtShell", jdtls.jshell, {})
+	-- vim.api.nvim_buf_create_user_command(bufnr, "JdtCompile", function(opts)
+	-- 	jdtls.compile(opts.args)
+	-- end, {
+	-- 	nargs = "?",
+	-- 	complete = function(_, _, _)
+	-- 		return jdtls._complete_compile()
+	-- 	end,
+	-- })
 
 
 	--- LSP --------------------------------------------------------------------
-	require("lang.java.jdtls").attach()
+	-- Commented since I'm using nvim-java now
+	-- require("lang.java.jdtls").attach()
 end
 
 return M

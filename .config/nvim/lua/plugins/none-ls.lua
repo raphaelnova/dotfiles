@@ -4,6 +4,7 @@ return {
 		dependencies = {
 			"nvimtools/none-ls-extras.nvim", -- for eslint_d
 		},
+		enabled = false,
 		config = function()
 			local null_ls = require("null-ls")
 			null_ls.setup({
@@ -27,6 +28,7 @@ return {
 		dependencies = {
 			"nvimtools/none-ls.nvim",
 		},
+		enabled = false,
 		config = function()
 			require("mason-null-ls").setup({
 				ensure_installed = nil,

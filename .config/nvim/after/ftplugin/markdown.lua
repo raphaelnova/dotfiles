@@ -1,8 +1,4 @@
 -- Only show Markdown formatting syntax under the cursor
-vim.opt.conceallevel = 2
+vim.opt.conceallevel = 0
 
--- Works on vim with gq, but not here due to 'formatexpr'
--- Has something to do with none-ls and prettier, which load
--- as an LSP for markdown files.
-vim.opt.textwidth = 100
--- vim.opt.formatoptions += ...
+require("lang.markdown").setup_buffer(vim.api.nvim_get_current_buf())

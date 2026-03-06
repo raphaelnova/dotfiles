@@ -14,6 +14,9 @@ return {
 			vim.lsp.config("ts_ls", { capabilities = capabilities })
 			vim.lsp.enable("ts_ls")
 
+			vim.lsp.config("lemminx", { capabilities = capabilities })
+			vim.lsp.enable("lemminx")
+
 			vim.lsp.config("markdown_oxide", {
 				capabilities = vim.tbl_deep_extend("force", capabilities, {
 					workspace = {
@@ -40,6 +43,7 @@ return {
 				"jdtls",
 				"ts_ls",
 				"bashls",
+				"lemminx",
 			},
 			automatic_enable = {
 				exclude = { "jdtls" },

@@ -44,21 +44,11 @@ function M.setup_tools()
 
 
 	--- Formatter and linter ---------------------------------------------------
-	local null_ls = require("null-ls")
 	utils.mason_install("black", function()
-		null_ls.register({
-			null_ls.builtins.formatting.black.with({
-				filetypes = { "python" },
-			})
-		})
+		require("conform").formatters_by_ft.python = { "black" }
 	end)
-	utils.mason_install("flake8", function()
-		null_ls.register({
-			require("none-ls.diagnostics.flake8").with({
-				filetypes = { "python" },
-				prefer_local = ".venv/bin",
-			})
-		})
+	utils.mason_install("flake8", function ()
+		require("lint").linters_by_ft.python = { "flake8" }
 	end)
 end
 

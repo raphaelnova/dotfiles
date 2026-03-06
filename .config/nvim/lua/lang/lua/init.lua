@@ -5,7 +5,6 @@ local M = {}
 --- Downloads any necessary tools to work with Lua, if they haven't been
 --- downloaded yet, and configures them. Should run at most once per session.
 function M.setup_tools()
-
 	--- LSP --------------------------------------------------------------------
 	utils.mason_install("lua-language-server")
 	vim.lsp.config("lua_ls", {
@@ -37,7 +36,6 @@ function M.setup_tools()
 	})
 	vim.lsp.enable("lua_ls")
 
-
 	--- DAP --------------------------------------------------------------------
 	local dap = require("dap")
 
@@ -58,13 +56,9 @@ function M.setup_tools()
 		},
 	}
 
-
 	--- Formatter and linter ---------------------------------------------------
-	local null_ls = require("null-ls")
 	utils.mason_install("stylua", function()
-		null_ls.register({
-			null_ls.builtins.formatting.stylua,
-		})
+		require("conform").formatters_by_ft.lua = { "stylua" }
 	end)
 end
 
@@ -76,7 +70,6 @@ function M.setup_buffer(bufnr)
 	--- Lang-specific options --------------------------------------------------
 	vim.bo[bufnr].tabstop = 3
 	vim.bo[bufnr].expandtab = false
-
 end
 
 return M

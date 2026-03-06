@@ -11,6 +11,9 @@ local cmd = vim.api.nvim_create_user_command
 function M.vanilla()
 
 	map("n", "<leader>C", f.rotate_colorscheme, { desc = "Rotate colorschemes." })
+	map({ "n", "v" }, "<leader>cf", function()
+		require("conform").format({ lsp_fallback = true })
+	end, { desc = "Code Format." })
 	map("n", "<leader>R", "<cmd>restart<cr>",   { desc = "Restart." })
 
 	-- Record macros with <leader>q
@@ -141,7 +144,6 @@ function M.lsp(bufnr)
 	map("n",          "<leader>cR", vim.lsp.buf.rename,        { buffer = bufnr, desc = "Code Rename." })
 	map("n",          "<leader>cD", vim.lsp.buf.declaration,   { buffer = bufnr, desc = "Code go to Declaration." })
 	map("n",          "<leader>cp", vim.diagnostic.open_float, { buffer = bufnr, desc = "Code show Problem." })
-	map({ "n", "v" }, "<leader>cf", vim.lsp.buf.format,        { buffer = bufnr, desc = "Code Format." })
 end
 
 ---Keys for DAP (debugger)

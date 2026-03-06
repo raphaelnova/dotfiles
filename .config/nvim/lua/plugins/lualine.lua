@@ -16,9 +16,9 @@ return {
 					},
 					-- insert, command, terminal, visual, replace
 				},
-				section_separators = { left = "", right = "", },
-				component_separators = { left = ":", right = ":", },
-				disabled_filetypes = { statusline = {}, winbar = {}, },
+				section_separators = { left = "", right = "" },
+				component_separators = { left = ":", right = ":" },
+				disabled_filetypes = { statusline = {}, winbar = {} },
 				ignore_focus = { "NvimTree" },
 				always_divide_middle = true,
 				globalstatus = false,
@@ -31,9 +31,9 @@ return {
 			sections = {
 				lualine_a = { "mode" },
 				lualine_b = { "filename" },
-				lualine_c = { },
+				lualine_c = {},
 
-				lualine_x = { },
+				lualine_x = {},
 				lualine_y = {
 					{
 						"diagnostics",
@@ -45,16 +45,16 @@ return {
 						},
 					},
 				},
-				lualine_z = { "lsp_status" },
+				lualine_z = { "lsp_status", "location" },
 			},
 			inactive_sections = {
 				lualine_a = { "filename" },
-				lualine_b = { },
-				lualine_c = { },
+				lualine_b = {},
+				lualine_c = {},
 
-				lualine_x = { },
-				lualine_y = { },
-				lualine_z = { },
+				lualine_x = {},
+				lualine_y = {},
+				lualine_z = {},
 			},
 			tabline = {},
 			winbar = {},

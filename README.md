@@ -36,6 +36,9 @@ alias dots="git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME"
 # 1. Don't show untracked files. You won't see a million files listed but you'll
 #    have to remember to add any new file you create because `dots status` won't
 #    list it until it's being tracked.
+#
+#    You can call `dots status -u path/to/list` to list new files under a given
+#    folder though.
 dots config --local status.showUntrackedFiles no
 
 # 2. Show files relative to the working dir, not the current dir.
