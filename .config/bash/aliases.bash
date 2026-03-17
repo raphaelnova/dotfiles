@@ -16,6 +16,7 @@ alias ps='ps -ww' # no truncating output based on screen width shenanigans
 alias vi='nvim .'
 alias gitroot='cd "$(git rev-parse --show-toplevel)"'
 alias nav='echo pop!; (nautilus . 1>/dev/null 2>&1 &)'
+alias mtree="tree -aFC --dirsfirst -I 'target|.settings|.mvn|.git'"
 
 alias ffmpeg="ffmpeg -hide_banner"
 alias ffplay="ffplay -hide_banner"

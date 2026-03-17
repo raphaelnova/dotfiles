@@ -114,6 +114,11 @@ SDKMAN_COMPLETION="$SDKMAN_DIR/contrib/completion/bash/sdk"
 
 [[ -s ~/gradle-completion.bash ]] && source ~/gradle-completion.bash
 
+# sdkman will hang for a few secs if it can't reach the internet,
+# even for actions that don't require internet like switching JDKs.
+# Why though?
+sdk offline enable >/dev/null
+
 
 #############################################
 #
