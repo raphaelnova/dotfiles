@@ -52,6 +52,18 @@ return {
 					"^venv$",
 				},
 			},
+			actions = {
+				open_file = {
+					quit_on_open = false,
+					resize_window = true,
+					window_picker = {
+						enable = true,
+					},
+				},
+				remove_file = {
+					close_window = true,
+				},
+			},
 		})
 
 		-- vim.api.nvim_set_hl(0, "NvimTreeFolderName",	      { link = "NvimTreeNormal" })

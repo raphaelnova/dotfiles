@@ -92,7 +92,10 @@ return {
 
 							-- Highlight groups defined by the LS (treesitter preferred)
 							-- https://github.com/catppuccin/nvim/blob/main/lua/catppuccin/groups/semantic_tokens.lua
-							["@lsp.type.variable"] = {},
+
+							-- I like it white, not cream, and distinct from the imported
+							-- element (class or static field)
+							["@lsp.type.namespace.java"] = { fg = cp.text, italic = true },
 
 							-- Markdown links were #h2 color with moxide
 							["@lsp.type.decorator.markdown"] = { link = "@markup.link.label" },

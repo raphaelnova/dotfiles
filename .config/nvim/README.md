@@ -8,5 +8,9 @@ but there are still some rough edges to fix, like snippets and autocomplete item
 
 - [ripgrep](https://github.com/BurntSushi/ripgrep): Used by Telescope
 
+## TODO
+
+- Setup lemminx-maven
+
 ## ... More on this later
 

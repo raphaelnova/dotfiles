@@ -121,13 +121,18 @@ local function jump_ref_link()
 end
 
 function M.setup_buffer(bufnr)
-	local utils = require("lang.utils")
 
-	-- Snippets are registered once per session (add_snippets is idempotent
-	-- with a stable key, but once() avoids redundant calls on each file open).
+	-- LSP hover (or any other unlisted buffer)
+	if vim.fn.getbufinfo(bufnr)[1].listed == 0 then
+		vim.opt.conceallevel = 2
+		return
+	end
+
+	vim.opt.conceallevel = 0
+
+	local utils = require("lang.utils")
 	utils.once("markdown_snippets", setup_snippets)
 
-	-- gd: jump between inline link and its definition.
 	vim.keymap.set("n", "gd", jump_ref_link, {
 		buffer = bufnr,
 		desc = "Markdown: jump between reference link and its definition",

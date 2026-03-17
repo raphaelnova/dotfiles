@@ -5,13 +5,8 @@ local M = {}
 --- Downloads any necessary tools to work with Java, if they haven't been
 --- downloaded yet, and configures them. Should run at most once per session.
 function M.setup_tools()
-
-	--- DAP & tests ------------------------------------------------------------
-	utils.mason_install("java-debug-adapter")
 	utils.mason_install("java-test")
-
-
-	--- Formatter and linter ---------------------------------------------------
+	utils.mason_install("java-debug-adapter")
 	utils.mason_install("google-java-format", function()
 		require("conform").formatters_by_ft.java = { "google-java-format" }
 	end)
@@ -22,13 +17,21 @@ end
 function M.setup_buffer(bufnr)
 	utils.once("lang.java.setup_tools", M.setup_tools)
 
-	--- Lang-specific options --------------------------------------------------
 	vim.bo[bufnr].tabstop = 4
 
-
-	--- Keymaps ----------------------------------------------------------------
 	require("config.keymaps").java(bufnr)
 
+	vim.lsp.codelens.refresh()
+	vim.api.nvim_create_autocmd("BufWritePost", {
+		pattern = { "*.java" },
+		callback = function()
+			pcall(vim.lsp.codelens.refresh)
+			pcall(vim.diagnostic.setqflist, { open = false })
+		end,
+	})
+
+	-- Commented since I'm using nvim-java now
+	-- require("lang.java.jdtls").attach()
 
 	--- User commands (buffer-local) -------------------------------------------
 	-- local jdtls = require("jdtls")
@@ -43,11 +46,6 @@ function M.setup_buffer(bufnr)
 	-- 		return jdtls._complete_compile()
 	-- 	end,
 	-- })
-
-
-	--- LSP --------------------------------------------------------------------
-	-- Commented since I'm using nvim-java now
-	-- require("lang.java.jdtls").attach()
 end
 
 return M

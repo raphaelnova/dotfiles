@@ -210,14 +210,14 @@ local function get_setup_config()
 		require("jdtls.setup").add_commands()
 
 		-- Enable and refresh codelens
-		-- vim.lsp.codelens.refresh()
-		-- vim.api.nvim_create_autocmd("BufWritePost", {
-		-- 	pattern = { "*.java" },
-		-- 	callback = function()
-		-- 		pcall(vim.lsp.codelens.refresh)
-		-- 		pcall(vim.diagnostic.setqflist)
-		-- 	end,
-		-- })
+		vim.lsp.codelens.refresh()
+		vim.api.nvim_create_autocmd("BufWritePost", {
+			pattern = { "*.java" },
+			callback = function()
+				pcall(vim.lsp.codelens.refresh)
+				pcall(vim.diagnostic.setqflist, { open = false })
+			end,
+		})
 
 		-- Filter "target/" folder from diagnostics
 		local orig_handler = vim.lsp.handlers["textDocument/publishDiagnostics"]

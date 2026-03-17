@@ -27,8 +27,8 @@ return {
 						mappings = {
 							n = {
 								["d"] = require("telescope.actions").delete_buffer,
-							}
-						}
+							},
+						},
 					},
 				},
 				extensions = {
