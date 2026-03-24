@@ -40,6 +40,7 @@ return {
 				"lazy",
 				"mason",
 				"NvimTree",
+				"Outline",
 				"qf",
 				"TelescopePrompt",
 				"TelescopeResults",

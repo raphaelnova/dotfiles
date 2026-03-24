@@ -31,7 +31,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 -- Only enable relativenumber on a focused window not in insert mode
 --
 local insert_mode
-local except_buffers = { 'help', 'NvimTree' }
+local except_buffers = { "help", "NvimTree", "Outline" }
 vim.api.nvim_create_autocmd({ "InsertEnter", "WinLeave" }, {
 	pattern = "*",
 	group = buffer_group,
