@@ -1,40 +1,10 @@
 local M = {}
+local find_root_package = require("lang.java.project").find_root_package
 
 local function find_project_root()
 	local root_markers = { "pom.xml", "build.gradle", "settings.gradle", ".git" }
 	local path = vim.fs.find(root_markers, { upward = true })[1]
 	return path and vim.fs.dirname(path) or nil
-end
-
-local function find_root_package(src_root)
-	local pkg = {}
-	local current = src_root
-
-	while true do
-		local entries = vim.fn.readdir(current)
-		local dirs, files = {}, {}
-
-		for _, e in ipairs(entries) do
-			local p = current .. "/" .. e
-			if vim.fn.isdirectory(p) == 1 then
-				table.insert(dirs, e)
-			elseif e:match("%.java$") then
-				table.insert(files, e)
-			end
-		end
-
-		if #files > 0 then
-			break
-		end
-		if #dirs ~= 1 then
-			break
-		end
-
-		table.insert(pkg, dirs[1])
-		current = current .. "/" .. dirs[1]
-	end
-
-	return table.concat(pkg, "."), current
 end
 
 local function scan_packages(base_dir, base_pkg, pkgs)

@@ -51,6 +51,7 @@ function M.vanilla()
 
 	-- Surrounding selected text with a given pair of (), "", {} etc.
 	local pairs = {
+		{ left = "`", right = "`" },
 		{ left = "'", right = "'" },
 		{ left = '"', right = '"' },
 		{ left = '(', right = ')' },

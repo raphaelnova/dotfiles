@@ -129,6 +129,7 @@ function M.setup_buffer(bufnr)
 	end
 
 	vim.opt.conceallevel = 0
+	vim.opt.colorcolumn = "90" -- same used in my .prettierrc
 
 	local utils = require("lang.utils")
 	utils.once("markdown_snippets", setup_snippets)
