@@ -82,13 +82,13 @@ config.window_padding = {
 config.initial_cols = 140
 config.initial_rows = 35
 
-config.keys = {
-	{
-		-- Disable unicode picker
-		key = "u",
-		mods = "CTRL|SHIFT",
-		action = wezterm.action.DisableDefaultAssignment,
-	},
-}
+-- config.keys = {
+-- 	{
+-- 		-- Disable unicode picker
+-- 		key = "u",
+-- 		mods = "CTRL|SHIFT",
+-- 		action = wezterm.action.DisableDefaultAssignment,
+-- 	},
+-- }
 
 return config
