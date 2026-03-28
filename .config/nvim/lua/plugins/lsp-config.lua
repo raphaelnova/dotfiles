@@ -68,6 +68,30 @@ return {
 		config = function()
 			require("java").setup()
 			vim.lsp.enable('jdtls')
+
+			-- spring-boot.nvim registers a FileType autocmd that starts Spring Boot LS
+			-- unconditionally. Replace it with a version that checks pom.xml first.
+			local project = require("lang.java.project")
+			local function is_spring_boot_project(bufnr)
+				local fname = vim.api.nvim_buf_get_name(bufnr)
+				local root = vim.fs.root(fname, { "pom.xml" })
+				return root ~= nil and project.is_spring_boot(root)
+			end
+
+			local acs = vim.api.nvim_get_autocmds({ group = "spring_boot_ls", event = "FileType" })
+			if #acs > 0 and acs[1].callback then
+				local orig = acs[1].callback
+				vim.api.nvim_create_augroup("spring_boot_ls", { clear = true })
+				vim.api.nvim_create_autocmd("FileType", {
+					group = "spring_boot_ls",
+					pattern = { "java", "yaml", "jproperties" },
+					desc = "Spring Boot Language Server (Spring Boot projects only)",
+					callback = function(e)
+						if not is_spring_boot_project(e.buf) then return end
+						orig(e)
+					end,
+				})
+			end
 		end,
 	},
 }

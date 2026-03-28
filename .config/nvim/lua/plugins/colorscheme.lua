@@ -86,6 +86,8 @@ return {
 							-- Fade out inlay hints a little more
 							LspInlayHint = { fg = cp.surface2, bg = "NONE" },
 
+							DropBarIconKindJavaPackage = { fg = "#AE7C56" },
+
 							-- Highlight groups defined by Tree-sitter
 							-- https://github.com/catppuccin/nvim/blob/main/lua/catppuccin/groups/treesitter.lua
 							["@keyword.conditional.lua"] = { fg = cp.mauve },
@@ -95,7 +97,7 @@ return {
 
 							-- I like it white, not cream, and distinct from the imported
 							-- element (class or static field)
-							["@lsp.type.namespace.java"] = { fg = cp.text, italic = true },
+							["@lsp.type.namespace.java"] = { fg = cp.text },
 
 							-- Markdown links were #h2 color with moxide
 							["@lsp.type.decorator.markdown"] = { link = "@markup.link.label" },

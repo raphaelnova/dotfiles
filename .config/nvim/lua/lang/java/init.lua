@@ -17,7 +17,7 @@ end
 function M.setup_buffer(bufnr)
 	utils.once("lang.java.setup_tools", M.setup_tools)
 
-	vim.bo[bufnr].tabstop = 4
+	vim.bo[bufnr].tabstop = 2
 
 	require("config.keymaps").java(bufnr)
 

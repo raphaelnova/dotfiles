@@ -54,6 +54,13 @@ function M.parse_pom(dir)
 		or xp(pom, "/*[local-name()='project']/*[local-name()='properties']/*[local-name()='maven.compiler.source']/text()")
 		or xp(pom, "/*[local-name()='project']/*[local-name()='properties']/*[local-name()='java.version']/text()")
 
+	-- If the property references another (I won't chase more than one level of indirection)
+	local property_ref = string.match(java_version or "", "%${(.*)}")
+	if (property_ref ~= nil and property_ref ~= "") then
+		java_version =
+			xp(pom, "/*[local-name()='project']/*[local-name()='properties']/*[local-name()='" .. property_ref .. "']/text()")
+	end
+
 	return {
 		group_id = group_id,
 		artifact_id = artifact_id,
@@ -91,6 +98,37 @@ function M.find_root_package(src_root)
 	end
 
 	return table.concat(pkg, "."), current
+end
+
+--- Recursively scans `base_dir` for subdirectories and returns package names
+--- relative to `base_dir`. Pass `base_pkg = ""` to get paths relative to
+--- `base_dir`, or an existing prefix to prepend.
+--- @param base_dir string
+--- @param base_pkg string
+--- @param pkgs string[]|nil accumulator; omit on first call
+--- @return string[]
+function M.scan_packages(base_dir, base_pkg, pkgs)
+	pkgs = pkgs or {}
+	for _, e in ipairs(vim.fn.readdir(base_dir)) do
+		local p = base_dir .. "/" .. e
+		if vim.fn.isdirectory(p) == 1 then
+			local pkg = base_pkg ~= "" and (base_pkg .. "." .. e) or e
+			table.insert(pkgs, pkg)
+			M.scan_packages(p, pkg, pkgs)
+		end
+	end
+	return pkgs
+end
+
+--- Returns true if the pom.xml in `dir` declares spring-boot-starter-parent as its parent.
+--- @param dir string|nil defaults to cwd
+--- @return boolean
+function M.is_spring_boot(dir)
+	dir = dir or vim.fn.getcwd()
+	local pom = dir .. "/pom.xml"
+	if vim.fn.filereadable(pom) == 0 then return false end
+	local artifact = xp(pom, "/*[local-name()='project']/*[local-name()='parent']/*[local-name()='artifactId']/text()")
+	return artifact == "spring-boot-starter-parent"
 end
 
 --- Returns the cached project info stored by the VimEnter autocmd, or nil.

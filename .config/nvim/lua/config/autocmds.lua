@@ -18,11 +18,16 @@ vim.api.nvim_create_autocmd("VimEnter", {
 		-- Parse pom.xml and store project info globally so any module can read it.
 		local info = project.parse_pom(cwd) or {}
 
-		-- root = deepest package prefix common to all classes (e.g. "com.example.app")
+		info.root_dir = cwd
+
+		-- root_package = deepest package prefix common to all classes
 		local src_root = cwd .. "/src/main/java"
 		if vim.fn.isdirectory(src_root) == 1 then
-			local root_pkg = project.find_root_package(src_root)
-			info.root_package = root_pkg ~= "" and root_pkg or nil
+			local root_pkg, root_pkg_dir = project.find_root_package(src_root)
+			if root_pkg ~= "" then
+				info.root_package = root_pkg
+				info.root_pkg_dir = root_pkg_dir
+			end
 		end
 
 		vim.g.java_project = info
