@@ -140,16 +140,16 @@ mvn_new_proj() {
   local artifact_id="$2"
   local package=""
   local interactive="true"
-  if [[ -n "$group_id" && -n "$artifact_id" ]]; then
-    package="$group_id.$artifact_id"
+  if [[ -n "${group_id}" && -n "${artifact_id}" ]]; then
+    package="${group_id}.${artifact_id//-/}"
     interactive="false"
   fi
 
   mvn archetype:generate \
-    -DarchetypeGroupId=org.apache.maven.archetypes \
-    -DarchetypeArtifactId=maven-archetype-quickstart \
-    -DarchetypeVersion=1.5 \
-    -DjavaCompilerVersion=21 \
+    -DarchetypeGroupId=info.raphaelnova \
+    -DarchetypeArtifactId=quickstart-archetype \
+    -DarchetypeVersion=1.0.0 \
+    -DjavaCompilerVersion=25 \
     -Dversion=1.0-SNAPSHOT \
     -DgroupId="$group_id" \
     -DartifactId="$artifact_id" \
